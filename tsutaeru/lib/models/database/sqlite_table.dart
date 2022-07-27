@@ -8,15 +8,15 @@ class TableColumnInfo {
   TableColumnInfo(this.columnName, this.dataType, this.isPrimaryKey);
 }
 
-class Table {
-  final String tableName;
-  final List<TableColumnInfo> columns;
+class SQLiteTable {
+  final String _tableName;
+  final List<TableColumnInfo> _columns;
 
-  Table(this.tableName, this.columns);
+  SQLiteTable(this._tableName, this._columns);
 
   String getCreateTableSql() {
-    String sql = "CREATE TABLE $tableName(";
-    for (var c in columns) {
+    String sql = "CREATE TABLE $_tableName(";
+    for (var c in _columns) {
       String columnName = c.columnName;
       String type;
       switch (c.dataType) {
@@ -46,7 +46,7 @@ class Table {
 
   Map<String, String> getColumnMap() {
     Map<String, String> map = {};
-    for (var c in columns) {
+    for (var c in _columns) {
       map.addAll({c.columnName: ""});
     }
 

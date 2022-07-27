@@ -1,8 +1,8 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:tsutaeru/models/database/table.dart';
+import 'package:tsutaeru/models/database/sqlite_table.dart';
 
 void main() {
-  Table t = Table("tableName", [
+  SQLiteTable t = SQLiteTable("tableName", [
     TableColumnInfo("id", SqlDataType.text, true),
     TableColumnInfo("name", SqlDataType.text, false),
     TableColumnInfo("date", SqlDataType.integer, false),
