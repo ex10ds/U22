@@ -53,7 +53,9 @@ abstract class DatabaseHelper {
         where: where, whereArgs: whereArgs, limit: 1);
 
     map.forEach((key, value) {
-      map[key] = maps[0][key];
+      if (maps.isNotEmpty) {
+        map[key] = maps[0][key];
+      }
     });
 
     return map;

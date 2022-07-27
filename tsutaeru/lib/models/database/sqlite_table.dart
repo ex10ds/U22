@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 enum SqlDataType { integer, text, blob }
 
 class TableColumnInfo {
@@ -128,7 +130,18 @@ class SQLiteTable {
   Map<String, dynamic> getColumnMap() {
     Map<String, dynamic> map = {};
     for (var c in _columns) {
-      map.addAll({c.columnName: ""});
+      switch (c.dataType) {
+        case SqlDataType.integer:
+          map.addAll({c.columnName: 0});
+          break;
+        case SqlDataType.text:
+          map.addAll({c.columnName: ""});
+          break;
+        case SqlDataType.blob:
+          Uint8List byte = Uint8List(0);
+          map.addAll({c.columnName: byte});
+          break;
+      }
     }
 
     return map;
