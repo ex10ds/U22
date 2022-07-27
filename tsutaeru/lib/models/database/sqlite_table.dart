@@ -32,6 +32,20 @@ class SQLiteTable {
 
   SQLiteTable(this._tableName, this._columns);
 
+  String getTableName() {
+    return _tableName;
+  }
+
+  List<String> getPrimaryKeys() {
+    List<String> list = [];
+    for (var c in _columns) {
+      if (c.primaryKey) {
+        list.add(c.columnName);
+      }
+    }
+    return list;
+  }
+
   String getCreateTableSql() {
     if (_tableName == "") {
       throw SQLiteTableError("empty string cannot be specified in tableName");
@@ -41,6 +55,8 @@ class SQLiteTable {
 
     List<String> primaryKeys = [];
     List<List<String>> foreignKeys = [];
+
+    bool foundPK = false;
 
     for (var c in _columns) {
       String columnName = c.columnName;
@@ -73,6 +89,7 @@ class SQLiteTable {
       }
 
       if (c.primaryKey) {
+        foundPK = true;
         primaryKeys.add(c.columnName);
       }
 
@@ -81,6 +98,10 @@ class SQLiteTable {
       }
 
       sql += "$columnName $type$last";
+    }
+
+    if (!foundPK) {
+      throw SQLiteTableError("one or more primary keys are required");
     }
 
     if (primaryKeys.isEmpty) {
@@ -104,22 +125,12 @@ class SQLiteTable {
     return sql;
   }
 
-  Map<String, String> getColumnMap() {
-    Map<String, String> map = {};
+  Map<String, dynamic> getColumnMap() {
+    Map<String, dynamic> map = {};
     for (var c in _columns) {
       map.addAll({c.columnName: ""});
     }
 
     return map;
-  }
-
-  List<String> getPrimaryKey() {
-    List<String> list = [];
-    for (var c in _columns) {
-      if (c.primaryKey) {
-        list.add(c.columnName);
-      }
-    }
-    return list;
   }
 }

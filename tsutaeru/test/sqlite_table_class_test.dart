@@ -27,12 +27,19 @@ void main() {
 
   test("SQLiteTable Class getColumnMap test", () {
     SQLiteTable t = SQLiteTable("tableName", [
-      TableColumnInfo("id", SqlDataType.text),
+      TableColumnInfo("id1", SqlDataType.text, primaryKey: true),
+      TableColumnInfo("id2", SqlDataType.text, primaryKey: true),
       TableColumnInfo("name", SqlDataType.text),
       TableColumnInfo("date", SqlDataType.integer),
     ]);
-    Map<String, String> expected = {"id": "", "name": "", "date": ""};
+    Map<String, String> expected = {
+      "id1": "",
+      "id2": "",
+      "name": "",
+      "date": ""
+    };
     expect(t.getColumnMap(), expected);
+    expect(t.getPrimaryKeys(), ["id1", "id2"]);
   });
 
   // SQLiteTable class cannot empty string in tableName, columnName
