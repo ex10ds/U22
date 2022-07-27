@@ -9,10 +9,17 @@ void main() {
       TableColumnInfo("name", SqlDataType.text, false, false),
       TableColumnInfo("date", SqlDataType.integer, false, false),
     ]);
-
     String expected =
-        "CREATE TABLE tableName(id TEXT PRIMARY KEY, name TEXT NOT NULL, date INTEGER NOT NULL)";
+        "CREATE TABLE tableName(id TEXT NOT NULL, name TEXT NOT NULL, date INTEGER NOT NULL, PRIMARY KEY (id))";
+    expect(t.getCreateTableSql(), expected);
 
+    // set primary key on multiple columns
+    t = SQLiteTable("tableName", [
+      TableColumnInfo("id1", SqlDataType.text, false, true),
+      TableColumnInfo("id2", SqlDataType.text, false, true),
+    ]);
+    expected =
+        "CREATE TABLE tableName(id1 TEXT NOT NULL, id2 TEXT NOT NULL, PRIMARY KEY (id1, id2))";
     expect(t.getCreateTableSql(), expected);
   });
 

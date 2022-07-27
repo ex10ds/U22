@@ -31,6 +31,8 @@ class SQLiteTable {
 
     String sql = "CREATE TABLE $_tableName(";
 
+    List<String> primaryKeys = [];
+
     for (var c in _columns) {
       String columnName = c.columnName;
 
@@ -39,7 +41,7 @@ class SQLiteTable {
             "empty string cannot be specified in columnName");
       }
 
-      if (c.primaryKey == true && c.nullable == true) {
+      if (c.primaryKey && c.nullable) {
         throw SQLiteTableError("primary key cannot be nullable");
       }
 
@@ -57,17 +59,28 @@ class SQLiteTable {
       }
 
       String last = ", ";
+      if (!c.nullable) {
+        last = " NOT NULL, ";
+      }
+
       if (c.primaryKey) {
-        last = " PRIMARY KEY, ";
-      } else {
-        if (!c.nullable) {
-          last = " NOT NULL, ";
-        }
+        primaryKeys.add(c.columnName);
       }
 
       sql += "$columnName $type$last";
     }
-    sql = "${sql.substring(0, sql.length - 2)})";
+
+    if (primaryKeys.isEmpty) {
+      throw SQLiteTableError("table need primary key");
+    }
+
+    sql += "PRIMARY KEY (";
+
+    for (var pk in primaryKeys) {
+      sql += "$pk, ";
+    }
+
+    sql = "${sql.substring(0, sql.length - 2)}))";
 
     return sql;
   }
