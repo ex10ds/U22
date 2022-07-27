@@ -5,18 +5,20 @@ void main() {
   // correct declaration
   test("SQLiteTable Class getCreateTableSql test", () {
     SQLiteTable t = SQLiteTable("tableName", [
-      TableColumnInfo("id", SqlDataType.text, false, true),
-      TableColumnInfo("name", SqlDataType.text, false, false),
-      TableColumnInfo("date", SqlDataType.integer, false, false),
+      TableColumnInfo("id", SqlDataType.text, primaryKey: true),
+      TableColumnInfo("name", SqlDataType.text),
+      TableColumnInfo("date", SqlDataType.integer),
+      TableColumnInfo("foreign_id", SqlDataType.integer,
+          reference: "ref_table", referenceKey: "ref_key"),
     ]);
     String expected =
-        "CREATE TABLE tableName(id TEXT NOT NULL, name TEXT NOT NULL, date INTEGER NOT NULL, PRIMARY KEY (id))";
+        "CREATE TABLE tableName(id TEXT NOT NULL, name TEXT NOT NULL, date INTEGER NOT NULL, foreign_id INTEGER NOT NULL, FOREIGN KEY (foreign_id) REFERENCES ref_table (ref_key), PRIMARY KEY (id))";
     expect(t.getCreateTableSql(), expected);
 
     // set primary key on multiple columns
     t = SQLiteTable("tableName", [
-      TableColumnInfo("id1", SqlDataType.text, false, true),
-      TableColumnInfo("id2", SqlDataType.text, false, true),
+      TableColumnInfo("id1", SqlDataType.text, primaryKey: true),
+      TableColumnInfo("id2", SqlDataType.text, primaryKey: true),
     ]);
     expected =
         "CREATE TABLE tableName(id1 TEXT NOT NULL, id2 TEXT NOT NULL, PRIMARY KEY (id1, id2))";
@@ -25,9 +27,9 @@ void main() {
 
   test("SQLiteTable Class getColumnMap test", () {
     SQLiteTable t = SQLiteTable("tableName", [
-      TableColumnInfo("id", SqlDataType.text, false, true),
-      TableColumnInfo("name", SqlDataType.text, false, false),
-      TableColumnInfo("date", SqlDataType.integer, false, false),
+      TableColumnInfo("id", SqlDataType.text),
+      TableColumnInfo("name", SqlDataType.text),
+      TableColumnInfo("date", SqlDataType.integer),
     ]);
     Map<String, String> expected = {"id": "", "name": "", "date": ""};
     expect(t.getColumnMap(), expected);
@@ -36,7 +38,7 @@ void main() {
   // SQLiteTable class cannot empty string in tableName, columnName
   test("SQLiteTable error handling about tableName", () {
     SQLiteTable t = SQLiteTable("", [
-      TableColumnInfo("id", SqlDataType.text, false, true),
+      TableColumnInfo("id", SqlDataType.text),
     ]);
 
     expect(() => t.getCreateTableSql(),
@@ -45,7 +47,7 @@ void main() {
 
   test("SQLiteTable error handling about columnName", () {
     SQLiteTable t = SQLiteTable("tableName", [
-      TableColumnInfo("", SqlDataType.text, false, true),
+      TableColumnInfo("", SqlDataType.text),
     ]);
 
     expect(() => t.getCreateTableSql(),
@@ -55,7 +57,7 @@ void main() {
   // primary key cannot be nullable
   test("SQLiteTableError primary key is nullable", () {
     SQLiteTable t = SQLiteTable("tableName", [
-      TableColumnInfo("id", SqlDataType.text, true, true),
+      TableColumnInfo("id", SqlDataType.text),
     ]);
 
     expect(() => t.getCreateTableSql(),

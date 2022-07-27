@@ -3,11 +3,19 @@ enum SqlDataType { integer, text, blob }
 class TableColumnInfo {
   final String columnName;
   final SqlDataType dataType;
-  final bool primaryKey;
   final bool nullable;
+  final bool primaryKey;
+  final String reference;
+  final String referenceKey;
 
   TableColumnInfo(
-      this.columnName, this.dataType, this.nullable, this.primaryKey);
+    this.columnName,
+    this.dataType, {
+    this.nullable = false,
+    this.primaryKey = false,
+    this.reference = "",
+    this.referenceKey = "",
+  });
 }
 
 class SQLiteTableError extends Error {
@@ -32,6 +40,7 @@ class SQLiteTable {
     String sql = "CREATE TABLE $_tableName(";
 
     List<String> primaryKeys = [];
+    List<List<String>> foreignKeys = [];
 
     for (var c in _columns) {
       String columnName = c.columnName;
@@ -67,11 +76,21 @@ class SQLiteTable {
         primaryKeys.add(c.columnName);
       }
 
+      if (c.reference != "" && c.referenceKey != "") {
+        foreignKeys.add([c.columnName, c.reference, c.referenceKey]);
+      }
+
       sql += "$columnName $type$last";
     }
 
     if (primaryKeys.isEmpty) {
       throw SQLiteTableError("table need primary key");
+    }
+
+    if (foreignKeys.isNotEmpty) {
+      for (List<String> fk in foreignKeys) {
+        sql += "FOREIGN KEY (${fk[0]}) REFERENCES ${fk[1]} (${fk[2]}), ";
+      }
     }
 
     sql += "PRIMARY KEY (";
@@ -92,5 +111,15 @@ class SQLiteTable {
     }
 
     return map;
+  }
+
+  List<String> getPrimaryKey() {
+    List<String> list = [];
+    for (var c in _columns) {
+      if (c.primaryKey) {
+        list.add(c.columnName);
+      }
+    }
+    return list;
   }
 }
