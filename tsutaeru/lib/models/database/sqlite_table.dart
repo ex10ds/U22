@@ -8,6 +8,14 @@ class TableColumnInfo {
   TableColumnInfo(this.columnName, this.dataType, this.isPrimaryKey);
 }
 
+class SQLiteTableError extends Error {
+  final String message;
+  SQLiteTableError(this.message);
+
+  @override
+  String toString() => message;
+}
+
 class SQLiteTable {
   final String _tableName;
   final List<TableColumnInfo> _columns;
@@ -15,9 +23,19 @@ class SQLiteTable {
   SQLiteTable(this._tableName, this._columns);
 
   String getCreateTableSql() {
+    if (_tableName == "") {
+      throw SQLiteTableError("empty string cannot be specified in tableName");
+    }
+
     String sql = "CREATE TABLE $_tableName(";
     for (var c in _columns) {
       String columnName = c.columnName;
+
+      if (c.columnName == "") {
+        throw SQLiteTableError(
+            "empty string cannot be specified in columnName");
+      }
+
       String type;
       switch (c.dataType) {
         case SqlDataType.integer:
