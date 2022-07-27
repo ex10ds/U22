@@ -3,9 +3,11 @@ enum SqlDataType { integer, text, blob }
 class TableColumnInfo {
   final String columnName;
   final SqlDataType dataType;
-  final bool isPrimaryKey;
+  final bool primaryKey;
+  final bool nullable;
 
-  TableColumnInfo(this.columnName, this.dataType, this.isPrimaryKey);
+  TableColumnInfo(
+      this.columnName, this.dataType, this.nullable, this.primaryKey);
 }
 
 class SQLiteTableError extends Error {
@@ -28,12 +30,17 @@ class SQLiteTable {
     }
 
     String sql = "CREATE TABLE $_tableName(";
+
     for (var c in _columns) {
       String columnName = c.columnName;
 
       if (c.columnName == "") {
         throw SQLiteTableError(
             "empty string cannot be specified in columnName");
+      }
+
+      if (c.primaryKey == true && c.nullable == true) {
+        throw SQLiteTableError("primary key cannot be nullable");
       }
 
       String type;
@@ -48,14 +55,17 @@ class SQLiteTable {
           type = "BLOB";
           break;
       }
-      String pk = ", ";
-      if (c.isPrimaryKey) {
-        pk = " ";
-        pk += "PRIMARY KEY";
-        pk += ", ";
+
+      String last = ", ";
+      if (c.primaryKey) {
+        last = " PRIMARY KEY, ";
+      } else {
+        if (!c.nullable) {
+          last = " NOT NULL, ";
+        }
       }
 
-      sql += "$columnName $type$pk";
+      sql += "$columnName $type$last";
     }
     sql = "${sql.substring(0, sql.length - 2)})";
 
