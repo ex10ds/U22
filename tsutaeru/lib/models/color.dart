@@ -25,39 +25,36 @@ class Color extends DatabaseHelper {
   }
 
   @override
-  void create() {
+  Future create() async {
     var map = tableSchema.getColumnMap();
     map[columnId] = createUuid();
     map[columnTextColor] = textColor;
     map[columnBackgroundColor] = backgroundColor;
     id = map[columnId];
-    insert(map);
+    await insert(map);
   }
 
   @override
-  void readById(String targetId) {
+  Future readById(String targetId) async {
     final pk = tableSchema.getPrimaryKeys()[0];
-    () async {
-      var map = await getRecord({pk: targetId});
-      id = map[columnId];
-      textColor = map[columnTextColor];
-      backgroundColor = map[columnBackgroundColor];
-      return;
-    };
+    var map = await getRecord({pk: targetId});
+    id = map[columnId];
+    textColor = map[columnTextColor];
+    backgroundColor = map[columnBackgroundColor];
   }
 
   @override
-  void update() {
+  Future update() async {
     var map = tableSchema.getColumnMap();
     map[columnId] = id;
     map[columnTextColor] = textColor;
     map[columnBackgroundColor] = backgroundColor;
-    edit(map);
+    await edit(map);
   }
 
   @override
-  void delete() {
+  Future delete() async {
     final pk = tableSchema.getPrimaryKeys()[0];
-    destroy({pk: id});
+    await destroy({pk: id});
   }
 }
