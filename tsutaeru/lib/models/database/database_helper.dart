@@ -5,21 +5,28 @@ import 'package:tsutaeru/values/internal.dart';
 import 'package:uuid/uuid.dart';
 
 class DatabaseHelperError extends Error {
-  final String message;
-  DatabaseHelperError(this.message);
+  final DatabaseHelperErrorType type;
+  DatabaseHelperError(this.type);
 
   @override
-  String toString() => message;
+  String toString() {
+    switch (type) {
+      case DatabaseHelperErrorType.mapIsNotCorrect:
+        return "map received has Key that does not exist";
+    }
+  }
 }
+
+enum DatabaseHelperErrorType { mapIsNotCorrect }
 
 abstract class DatabaseHelper {
   final SQLiteTable tableSchema;
   DatabaseHelper(this.tableSchema);
 
-  void create();
-  void readById(String targetId);
-  void update();
-  void delete();
+  Future create();
+  Future readById(String targetId);
+  Future update();
+  Future delete();
 
   Future<Database> _openDB() async {
     return openDatabase(join(await getDatabasesPath(), databaseName),
@@ -63,6 +70,9 @@ abstract class DatabaseHelper {
 
   // UPDATE
   Future<void> edit(Map<String, dynamic> map) async {
+    if (testAllMapKey(map)) {
+      throw DatabaseHelperError(DatabaseHelperErrorType.mapIsNotCorrect);
+    }
     final db = await _openDB();
     await db.update(tableSchema.getTableName(), map);
   }
@@ -99,8 +109,14 @@ abstract class DatabaseHelper {
     Map<String, dynamic> fromSchema = tableSchema.getColumnMap();
     bool flag = true;
 
-    fromSchema.forEach((k, v) {
+    fromSchema.forEach((k, _) {
       if (!map.containsKey(k)) {
+        flag = false;
+      }
+    });
+
+    map.forEach((k, _) {
+      if (!fromSchema.containsKey(k)) {
         flag = false;
       }
     });
@@ -112,7 +128,7 @@ abstract class DatabaseHelper {
     Map<String, dynamic> fromSchema = tableSchema.getColumnMap();
     bool flag = true;
 
-    map.forEach((k, v) {
+    map.forEach((k, _) {
       if (!fromSchema.containsKey(k)) {
         flag = false;
       }
