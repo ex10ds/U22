@@ -32,11 +32,11 @@ void main() {
       TableColumnInfo("name", SqlDataType.text),
       TableColumnInfo("date", SqlDataType.integer),
     ]);
-    Map<String, String> expected = {
+    Map<String, dynamic> expected = {
       "id1": "",
       "id2": "",
       "name": "",
-      "date": ""
+      "date": 0
     };
     expect(t.getColumnMap(), expected);
     expect(t.getPrimaryKeys(), ["id1", "id2"]);
