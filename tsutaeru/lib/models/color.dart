@@ -25,7 +25,7 @@ class Color extends DatabaseHelper {
   }
 
   @override
-  Future create() async {
+  Future<void> create() async {
     var map = tableSchema.getColumnMap();
     map[columnId] = createUuid();
     map[columnTextColor] = textColor;
@@ -35,7 +35,7 @@ class Color extends DatabaseHelper {
   }
 
   @override
-  Future readById(String targetId) async {
+  Future<void> readById(String targetId) async {
     final pk = tableSchema.getPrimaryKeys()[0];
     var map = await getRecord({pk: targetId});
     id = map[columnId];
@@ -44,7 +44,7 @@ class Color extends DatabaseHelper {
   }
 
   @override
-  Future update() async {
+  Future<void> update() async {
     var map = tableSchema.getColumnMap();
     map[columnId] = id;
     map[columnTextColor] = textColor;
@@ -53,7 +53,7 @@ class Color extends DatabaseHelper {
   }
 
   @override
-  Future delete() async {
+  Future<void> delete() async {
     final pk = tableSchema.getPrimaryKeys()[0];
     await destroy({pk: id});
   }
