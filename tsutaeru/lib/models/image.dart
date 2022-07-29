@@ -1,27 +1,29 @@
+import 'dart:typed_data';
+
 import 'package:tsutaeru/models/database/database_helper.dart';
 import 'package:tsutaeru/models/database/sqlite.dart';
+import 'package:tsutaeru/models/words.dart';
 
-class Color extends DatabaseHelper {
+class Image extends DatabaseHelper {
   static const _columnId = "id";
-  static const _columnTextColor = "text_color";
-  static const _columnBackgroundColor = "background_color";
+  static const _columnWordId = "word_id";
+  static const _columnImage = "image";
 
-  // table columns
   late String id;
-  late int textColor;
-  late int backgroundColor;
+  late Word word;
+  late Uint8List image;
 
-  // constructor
-  Color()
-      : super(SQLiteSchema("colors", [
-          // ... lumnInfo("COLUMN_NAME", DATA_TYPE)
+  Image()
+      : super(SQLiteSchema("images", [
           SQLiteColumn(_columnId, SQLiteDataType.text, primaryKey: true),
-          SQLiteColumn(_columnTextColor, SQLiteDataType.integer),
-          SQLiteColumn(_columnBackgroundColor, SQLiteDataType.integer),
+          SQLiteColumn(_columnWordId, SQLiteDataType.text,
+              reference: Word().getTableName(),
+              referenceKey: Word().getPrimaryKeys()[0]),
+          SQLiteColumn(_columnImage, SQLiteDataType.blob),
         ])) {
     id = "";
-    textColor = 0;
-    backgroundColor = 0;
+    word = Word();
+    image = Uint8List(0);
   }
 
   @override
@@ -29,8 +31,8 @@ class Color extends DatabaseHelper {
     var map = getColumnMap();
     id = createUuid();
     map[_columnId] = id;
-    map[_columnTextColor] = textColor;
-    map[_columnBackgroundColor] = backgroundColor;
+    map[_columnWordId] = word.id;
+    map[_columnImage] = image;
     insert(map);
   }
 
@@ -39,16 +41,16 @@ class Color extends DatabaseHelper {
     final pk = getPrimaryKeys()[0];
     var map = await getRecord({pk: targetId});
     id = map[_columnId];
-    textColor = map[_columnTextColor];
-    backgroundColor = map[_columnBackgroundColor];
+    word.getRecord({word.getPrimaryKeys()[0]: map[_columnWordId]});
+    image = map[_columnImage];
   }
 
   @override
   Future<void> update() async {
     var map = getColumnMap();
     map[_columnId] = id;
-    map[_columnTextColor] = textColor;
-    map[_columnBackgroundColor] = backgroundColor;
+    map[_columnWordId] = word.id;
+    map[_columnImage] = image;
     edit(map);
   }
 

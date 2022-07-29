@@ -1,7 +1,9 @@
+import 'dart:ffi';
+
 import 'package:flutter/widgets.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
-import 'package:tsutaeru/models/database/sqlite_table.dart';
+import 'package:tsutaeru/models/database/sqlite.dart';
 import 'package:tsutaeru/values/internal.dart';
 import 'package:uuid/uuid.dart';
 
@@ -21,7 +23,7 @@ class DatabaseHelperError extends Error {
 enum DatabaseHelperErrorType { mapIsNotCorrect }
 
 abstract class DatabaseHelper {
-  final SQLiteTable tableSchema;
+  final SQLiteSchema tableSchema;
   DatabaseHelper(this.tableSchema);
 
   Future<void> create();
@@ -79,6 +81,30 @@ abstract class DatabaseHelper {
     return map;
   }
 
+  Future<List<Map<String, dynamic>>> getSomeRecord(
+      Map<String, dynamic> whereAnd) async {
+    if (testSomeMapKey(whereAnd)) {
+      throw DatabaseHelperError(DatabaseHelperErrorType.mapIsNotCorrect);
+    }
+    final db = await _openDB();
+
+    String where = "";
+    List<dynamic> whereArgs = [];
+
+    whereAnd.forEach((key, value) {
+      if (value != null) {
+        where += "$key = ? and ";
+        whereArgs.add(value);
+      }
+    });
+    where = where.substring(0, where.length - 5);
+
+    var maps = await db.query(tableSchema.getTableName(),
+        where: where, whereArgs: whereArgs);
+
+    return maps;
+  }
+
   // UPDATE
   @protected
   Future<void> edit(Map<String, dynamic> map) async {
@@ -112,10 +138,20 @@ abstract class DatabaseHelper {
         where: where, whereArgs: whereArgs);
   }
 
+  // wrapper functions
+  String getTableName() {
+    return tableSchema.getTableName();
+  }
+
   Map<String, dynamic> getColumnMap() {
     return tableSchema.getColumnMap();
   }
 
+  List<String> getPrimaryKeys() {
+    return tableSchema.getPrimaryKeys();
+  }
+
+  // methods for sub class
   @protected
   String createUuid() {
     Uuid uuid = const Uuid();
