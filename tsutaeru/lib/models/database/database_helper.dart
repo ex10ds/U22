@@ -26,6 +26,7 @@ abstract class DatabaseHelper {
   final SQLiteSchema tableSchema;
   DatabaseHelper(this.tableSchema);
 
+  // for front end developer
   Future<void> create();
   Future<void> readById(String targetId);
   Future<void> update();
@@ -41,7 +42,7 @@ abstract class DatabaseHelper {
   // CREATE
   @protected
   Future<void> insert(Map<String, dynamic> map) async {
-    if (testAllMapKey(map)) {
+    if (!testAllMapKey(map)) {
       throw DatabaseHelperError(DatabaseHelperErrorType.mapIsNotCorrect);
     }
     final db = await _openDB();
@@ -52,7 +53,7 @@ abstract class DatabaseHelper {
   // READ
   @protected
   Future<Map<String, dynamic>> getRecord(Map<String, dynamic> whereAnd) async {
-    if (testSomeMapKey(whereAnd)) {
+    if (!testSomeMapKey(whereAnd)) {
       throw DatabaseHelperError(DatabaseHelperErrorType.mapIsNotCorrect);
     }
     final db = await _openDB();
@@ -83,7 +84,7 @@ abstract class DatabaseHelper {
 
   Future<List<Map<String, dynamic>>> getSomeRecord(
       Map<String, dynamic> whereAnd) async {
-    if (testSomeMapKey(whereAnd)) {
+    if (!testSomeMapKey(whereAnd)) {
       throw DatabaseHelperError(DatabaseHelperErrorType.mapIsNotCorrect);
     }
     final db = await _openDB();
@@ -108,7 +109,7 @@ abstract class DatabaseHelper {
   // UPDATE
   @protected
   Future<void> edit(Map<String, dynamic> map) async {
-    if (testAllMapKey(map)) {
+    if (!testAllMapKey(map)) {
       throw DatabaseHelperError(DatabaseHelperErrorType.mapIsNotCorrect);
     }
     final db = await _openDB();
@@ -118,7 +119,7 @@ abstract class DatabaseHelper {
   // DELETE
   @protected
   Future<void> destroy(Map<String, dynamic> whereAnd) async {
-    if (testSomeMapKey(whereAnd)) {
+    if (!testSomeMapKey(whereAnd)) {
       throw DatabaseHelperError(DatabaseHelperErrorType.mapIsNotCorrect);
     }
     final db = await _openDB();
@@ -190,5 +191,10 @@ abstract class DatabaseHelper {
     });
 
     return flag;
+  }
+
+  @protected
+  void callTestAnyMapError() {
+    throw DatabaseHelperError(DatabaseHelperErrorType.mapIsNotCorrect);
   }
 }

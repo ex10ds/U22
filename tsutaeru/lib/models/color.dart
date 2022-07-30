@@ -36,8 +36,7 @@ class Color extends DatabaseHelper {
 
   @override
   Future<void> readById(String targetId) async {
-    final pk = getPrimaryKeys()[0];
-    var map = await getRecord({pk: targetId});
+    var map = await getRecord({getPrimaryKeys()[0]: targetId});
     id = map[_columnId];
     textColor = map[_columnTextColor];
     backgroundColor = map[_columnBackgroundColor];

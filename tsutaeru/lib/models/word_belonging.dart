@@ -3,7 +3,6 @@ import 'package:tsutaeru/models/database/sqlite.dart';
 import 'package:tsutaeru/models/word_group.dart';
 import 'package:tsutaeru/models/words.dart';
 
-// wrapper class
 class UnsafeWordBelonging extends DatabaseHelper {
   static const _columnWordGroupId = "word_group_id";
   static const _columnWordId = "word_id";
@@ -16,9 +15,6 @@ class UnsafeWordBelonging extends DatabaseHelper {
     return _columnWordId;
   }
 
-  late WordGroup wordGroup;
-  late Word word;
-
   UnsafeWordBelonging()
       : super(SQLiteSchema("words_belonging", [
           SQLiteColumn(_columnWordGroupId, SQLiteDataType.text,
@@ -29,13 +25,15 @@ class UnsafeWordBelonging extends DatabaseHelper {
               primaryKey: true,
               reference: Word().tableSchema.getTableName(),
               referenceKey: Word().getPrimaryKeys()[0]),
-        ])) {
-    wordGroup = WordGroup();
-    word = Word();
-  }
+        ]));
 
   @override
-  Future<void> create() async {}
+  Future<void> create({String wordGroupId = "", String wordId = ""}) async {
+    var map = getColumnMap();
+    map[_columnWordGroupId] = wordGroupId;
+    map[_columnWordId] = wordId;
+    insert(map);
+  }
 
   @override
   Future<void> readById(String targetId) async {
@@ -58,11 +56,16 @@ class UnsafeWordBelonging extends DatabaseHelper {
   }
 }
 
+// wrapped class
 class WordBelonging {
   final UnsafeWordBelonging wb = UnsafeWordBelonging();
 
+  Future<void> create({String wordGroupId = "", String wordId = ""}) async {
+    wb.create(wordGroupId: wordGroupId, wordId: wordId);
+  }
+
   Future<List<Map<String, dynamic>>> readById(
-      {wordGroupId = "", wordId = ""}) async {
+      {String wordGroupId = "", String wordId = ""}) async {
     List<Map<String, dynamic>> list = [];
     if (wordGroupId != "" && wordId != "") {
       list = await wb.getSomeRecord(
@@ -75,7 +78,8 @@ class WordBelonging {
     return list;
   }
 
-  Future<void> delete({wordGroupId = "", wordId = ""}) async {
+  // remove from group
+  Future<void> delete({String wordGroupId = "", String wordId = ""}) async {
     wb.delete(wordGroupId: wordGroupId, wordId: wordId);
   }
 }

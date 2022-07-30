@@ -1,7 +1,7 @@
 import 'package:tsutaeru/models/color.dart';
 import 'package:tsutaeru/models/database/database_helper.dart';
 import 'package:tsutaeru/models/database/sqlite.dart';
-import 'package:tsutaeru/models/word_group.dart';
+import 'package:tsutaeru/models/word_belonging.dart';
 
 class Word extends DatabaseHelper {
   static const _columnId = "id";
@@ -11,7 +11,6 @@ class Word extends DatabaseHelper {
   late String id;
   late String text;
   late Color color;
-  late List<WordGroup> group;
 
   Word()
       : super(SQLiteSchema("words", [
@@ -24,30 +23,49 @@ class Word extends DatabaseHelper {
     id = "";
     text = "";
     color = Color();
-    group = [];
+  }
+
+  Future<void> readByMap(Map<String, dynamic> map) async {
+    if (!testAllMapKey(map)) {
+      callTestAnyMapError();
+    }
+
+    id = map[_columnId];
+    text = map[_columnText];
+    color = Color();
+    await color.readById(map[_columnColorId]);
   }
 
   @override
-  Future<void> create() {
-    // TODO: implement create
-    throw UnimplementedError();
+  Future<void> create() async {
+    var map = getColumnMap();
+    id = createUuid();
+    map[_columnId] = id;
+    map[_columnText] = text;
+    map[_columnColorId] = color.id;
+    insert(map);
   }
 
   @override
-  Future<void> delete() {
-    // TODO: implement delete
-    throw UnimplementedError();
+  Future<void> readById(String targetId) async {
+    var map = await getRecord({getPrimaryKeys()[0]: targetId});
+    id = map[_columnId];
+    text = map[_columnText];
+    await color.readById(map[_columnColorId]);
   }
 
   @override
-  Future<void> readById(String targetId) {
-    // TODO: implement readById
-    throw UnimplementedError();
+  Future<void> update() async {
+    var map = getColumnMap();
+    map[_columnId] = id;
+    map[_columnText] = text;
+    map[_columnColorId] = color.id;
+    edit(map);
   }
 
   @override
-  Future<void> update() {
-    // TODO: implement update
-    throw UnimplementedError();
+  Future<void> delete() async {
+    WordBelonging().delete(wordId: id);
+    destroy({_columnId: id});
   }
 }
