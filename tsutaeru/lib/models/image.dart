@@ -10,7 +10,7 @@ class Image extends DatabaseHelper {
   static const _columnImage = "image";
 
   late String id;
-  late Word word;
+  late String wordId;
   late Uint8List image;
 
   Image()
@@ -22,7 +22,7 @@ class Image extends DatabaseHelper {
           SQLiteColumn(_columnImage, SQLiteDataType.blob),
         ])) {
     id = "";
-    word = Word();
+    wordId = "";
     image = Uint8List(0);
   }
 
@@ -31,9 +31,22 @@ class Image extends DatabaseHelper {
     var map = getColumnMap();
     id = createUuid();
     map[_columnId] = id;
-    map[_columnWordId] = word.id;
+    map[_columnWordId] = wordId;
     map[_columnImage] = image;
     insert(map);
+  }
+
+  Future<List<Image>> readByWordId(String wordId) async {
+    var list = await getSomeRecord({Word().getPrimaryKeys()[0]: wordId});
+    List<Image> images = [];
+    for (var map in list) {
+      Image tmp = Image();
+      tmp.id = map[_columnId];
+      tmp.wordId = map[_columnWordId];
+      tmp.image = map[_columnImage];
+      images.add(tmp);
+    }
+    return images;
   }
 
   @override
@@ -41,7 +54,7 @@ class Image extends DatabaseHelper {
     final pk = getPrimaryKeys()[0];
     var map = await getRecord({pk: targetId});
     id = map[_columnId];
-    word.getRecord({word.getPrimaryKeys()[0]: map[_columnWordId]});
+    wordId = map[_columnWordId];
     image = map[_columnImage];
   }
 
@@ -52,7 +65,7 @@ class Image extends DatabaseHelper {
     for (var map in list) {
       Image object = Image();
       object.id = map[_columnId];
-      object.word.getRecord({word.getPrimaryKeys()[0]: map[_columnWordId]});
+      object.wordId = map[_columnWordId];
       object.image = map[_columnImage];
       r.add(object);
     }
@@ -63,7 +76,7 @@ class Image extends DatabaseHelper {
   Future<void> update() async {
     var map = getColumnMap();
     map[_columnId] = id;
-    map[_columnWordId] = word.id;
+    map[_columnWordId] = wordId;
     map[_columnImage] = image;
     edit(map);
   }

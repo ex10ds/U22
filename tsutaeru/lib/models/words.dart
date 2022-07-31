@@ -25,6 +25,16 @@ class Word extends DatabaseHelper {
     color = Color();
   }
 
+  @override
+  Future<void> create() async {
+    var map = getColumnMap();
+    id = createUuid();
+    map[_columnId] = id;
+    map[_columnText] = text;
+    map[_columnColorId] = color.id;
+    insert(map);
+  }
+
   Future<void> readByMap(Map<String, dynamic> map) async {
     if (!testAllMapKey(map)) {
       callTestAnyMapError();
@@ -34,16 +44,6 @@ class Word extends DatabaseHelper {
     text = map[_columnText];
     color = Color();
     await color.readById(map[_columnColorId]);
-  }
-
-  @override
-  Future<void> create() async {
-    var map = getColumnMap();
-    id = createUuid();
-    map[_columnId] = id;
-    map[_columnText] = text;
-    map[_columnColorId] = color.id;
-    insert(map);
   }
 
   @override
