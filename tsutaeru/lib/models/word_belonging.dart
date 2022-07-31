@@ -15,6 +15,9 @@ class UnsafeWordBelonging extends DatabaseHelper {
     return _columnWordId;
   }
 
+  late String wordGroupId;
+  late String wordId;
+
   UnsafeWordBelonging()
       : super(SQLiteSchema("words_belonging", [
           SQLiteColumn(_columnWordGroupId, SQLiteDataType.text,
@@ -25,7 +28,10 @@ class UnsafeWordBelonging extends DatabaseHelper {
               primaryKey: true,
               reference: Word().tableSchema.getTableName(),
               referenceKey: Word().getPrimaryKeys()[0]),
-        ]));
+        ])) {
+    wordGroupId = "";
+    wordId = "";
+  }
 
   @override
   Future<void> create({String wordGroupId = "", String wordId = ""}) async {
@@ -36,13 +42,30 @@ class UnsafeWordBelonging extends DatabaseHelper {
   }
 
   @override
-  Future<void> readById(String targetId) async {
-    throw UnimplementedError();
+  Future<List<Map<String, dynamic>>> readById(String targetId) async {
+    var list = await getSomeRecord({_columnWordGroupId: targetId});
+    return list;
   }
 
   @override
-  Future<void> update() async {
-    throw UnimplementedError();
+  Future<List<Object>> readAll() async {
+    var list = await getAllRecord();
+    List<UnsafeWordBelonging> wb = [];
+    for (var elem in list) {
+      var tmp = UnsafeWordBelonging();
+      tmp.wordGroupId = elem[_columnWordGroupId];
+      tmp.wordId = elem[_columnWordId];
+      wb.add(tmp);
+    }
+    return wb;
+  }
+
+  @override
+  Future<void> update({String wordGroupId = "", String wordId = ""}) async {
+    var map = getColumnMap();
+    map[_columnWordGroupId] = wordGroupId;
+    map[_columnWordId] = wordId;
+    edit(map);
   }
 
   @override

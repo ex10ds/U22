@@ -46,6 +46,20 @@ class Image extends DatabaseHelper {
   }
 
   @override
+  Future<List<Object>> readAll() async {
+    var list = await getAllRecord();
+    List<Image> r = [];
+    for (var map in list) {
+      Image object = Image();
+      object.id = map[_columnId];
+      object.word.getRecord({word.getPrimaryKeys()[0]: map[_columnWordId]});
+      object.image = map[_columnImage];
+      r.add(object);
+    }
+    return r;
+  }
+
+  @override
   Future<void> update() async {
     var map = getColumnMap();
     map[_columnId] = id;

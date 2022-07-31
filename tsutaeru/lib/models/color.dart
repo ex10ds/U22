@@ -43,6 +43,20 @@ class Color extends DatabaseHelper {
   }
 
   @override
+  Future<List<Color>> readAll() async {
+    var list = await getAllRecord();
+    List<Color> r = [];
+    for (var map in list) {
+      Color object = Color();
+      object.id = map[_columnId];
+      object.textColor = map[_columnTextColor];
+      object.backgroundColor = map[_columnBackgroundColor];
+      r.add(object);
+    }
+    return r;
+  }
+
+  @override
   Future<void> update() async {
     var map = getColumnMap();
     map[_columnId] = id;

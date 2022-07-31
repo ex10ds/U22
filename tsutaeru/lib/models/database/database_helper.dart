@@ -29,6 +29,7 @@ abstract class DatabaseHelper {
   // for front end developer
   Future<void> create();
   Future<void> readById(String targetId);
+  Future<List<Object>> readAll();
   Future<void> update();
   Future<void> delete();
 
@@ -103,6 +104,12 @@ abstract class DatabaseHelper {
     var maps = await db.query(tableSchema.getTableName(),
         where: where, whereArgs: whereArgs);
 
+    return maps;
+  }
+
+  Future<List<Map<String, dynamic>>> getAllRecord() async {
+    final db = await _openDB();
+    var maps = await db.query(tableSchema.getTableName());
     return maps;
   }
 

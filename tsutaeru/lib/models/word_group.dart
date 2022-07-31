@@ -53,6 +53,26 @@ class WordGroup extends DatabaseHelper {
   }
 
   @override
+  Future<List<Object>> readAll() async {
+    var list = await getAllRecord();
+    List<WordGroup> r = [];
+    for (var map in list) {
+      WordGroup object = WordGroup();
+      object.id = map[_columnId];
+      object.name = map[_columnName];
+
+      var l = await WordBelonging().readById(wordGroupId: object.id);
+      for (var elem in l) {
+        Word word = Word();
+        await word.readByMap(elem);
+        object.words.add(word);
+      }
+      r.add(object);
+    }
+    return r;
+  }
+
+  @override
   Future<void> update() async {
     var map = getColumnMap();
     map[_columnId] = id;

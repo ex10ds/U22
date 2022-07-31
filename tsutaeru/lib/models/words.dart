@@ -55,6 +55,19 @@ class Word extends DatabaseHelper {
   }
 
   @override
+  Future<List<Object>> readAll() async {
+    var list = await getAllRecord();
+    List<Word> r = [];
+    for (var map in list) {
+      Word object = Word();
+      object.id = map[_columnId];
+
+      r.add(object);
+    }
+    return r;
+  }
+
+  @override
   Future<void> update() async {
     var map = getColumnMap();
     map[_columnId] = id;
