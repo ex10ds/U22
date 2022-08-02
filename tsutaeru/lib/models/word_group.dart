@@ -14,7 +14,7 @@ class WordGroup extends DatabaseHelper {
   WordGroup()
       : super(SQLiteSchema("word_groups", [
           SQLiteColumn(_columnId, SQLiteDataType.text, primaryKey: true),
-          SQLiteColumn(_columnId, SQLiteDataType.text),
+          SQLiteColumn(_columnName, SQLiteDataType.text),
         ])) {
     id = "";
     name = "";

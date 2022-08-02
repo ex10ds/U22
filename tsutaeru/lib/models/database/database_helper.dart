@@ -13,7 +13,7 @@ class DatabaseHelperError extends Error {
   String toString() {
     switch (type) {
       case DatabaseHelperErrorType.mapIsNotCorrect:
-        return "map received has Key that does not exist";
+        return "map received is not correct";
     }
   }
 }
@@ -33,8 +33,8 @@ abstract class DatabaseHelper {
 
   Future<Database> _openDB() async {
     return openDatabase(join(await getDatabasesPath(), databaseName),
-        onCreate: (db, version) {
-      return db.execute(tableSchema.getCreateTableSql());
+        onCreate: (db, version) async {
+      return await db.execute(tableSchema.getCreateTableSql());
     }, version: databaseVersion);
   }
 

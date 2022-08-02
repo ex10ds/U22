@@ -118,7 +118,7 @@ class SQLiteSchema {
       sql += "$pk, ";
     }
 
-    sql = "${sql.substring(0, sql.length - 2)}))";
+    sql = "${sql.substring(0, sql.length - 2)}));";
 
     return sql;
   }

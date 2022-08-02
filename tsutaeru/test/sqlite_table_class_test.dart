@@ -42,7 +42,7 @@ void main() {
     expect(t.getPrimaryKeys(), ["id1", "id2"]);
   });
 
-  // SQLiteSchema class cannot empty string in tableName, columnName
+  // SQLiteSchema class cannot empty in tableName, columnName
   test("SQLiteSchema error handling about tableName", () {
     SQLiteSchema t = SQLiteSchema("", [
       SQLiteColumn("id", SQLiteDataType.text),
