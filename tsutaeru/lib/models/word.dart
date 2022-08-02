@@ -55,7 +55,7 @@ class Word extends DatabaseHelper {
   }
 
   @override
-  Future<List<Object>> readAll() async {
+  Future<List<Word>> readAll() async {
     var list = await getAllRecord();
     List<Word> r = [];
     for (var map in list) {

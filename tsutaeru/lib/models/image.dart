@@ -2,7 +2,7 @@ import 'dart:typed_data';
 
 import 'package:tsutaeru/models/database/database_helper.dart';
 import 'package:tsutaeru/models/database/sqlite.dart';
-import 'package:tsutaeru/models/words.dart';
+import 'package:tsutaeru/models/word.dart';
 
 class Image extends DatabaseHelper {
   static const _columnId = "id";
@@ -59,7 +59,7 @@ class Image extends DatabaseHelper {
   }
 
   @override
-  Future<List<Object>> readAll() async {
+  Future<List<Image>> readAll() async {
     var list = await getAllRecord();
     List<Image> r = [];
     for (var map in list) {

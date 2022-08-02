@@ -1,7 +1,7 @@
 import 'package:tsutaeru/models/database/database_helper.dart';
 import 'package:tsutaeru/models/database/sqlite.dart';
 import 'package:tsutaeru/models/word_group.dart';
-import 'package:tsutaeru/models/words.dart';
+import 'package:tsutaeru/models/word.dart';
 
 class UnsafeWordBelonging extends DatabaseHelper {
   static const _columnWordGroupId = "word_group_id";
@@ -48,7 +48,7 @@ class UnsafeWordBelonging extends DatabaseHelper {
   }
 
   @override
-  Future<List<Object>> readAll() async {
+  Future<List<UnsafeWordBelonging>> readAll() async {
     var list = await getAllRecord();
     List<UnsafeWordBelonging> wb = [];
     for (var elem in list) {
@@ -70,10 +70,11 @@ class UnsafeWordBelonging extends DatabaseHelper {
 
   @override
   Future<void> delete({String wordGroupId = "", String wordId = ""}) async {
-    if (wordGroupId != "") {
+    if (wordGroupId != "" && wordGroupId != "") {
+      await destroy({_columnWordGroupId: wordGroupId, _columnWordId: wordId});
+    } else if (wordGroupId != "") {
       await destroy({_columnWordGroupId: wordGroupId});
-    }
-    if (wordId != "") {
+    } else if (wordId != "") {
       await destroy({_columnWordId: wordId});
     }
   }

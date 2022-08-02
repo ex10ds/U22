@@ -1,7 +1,7 @@
 import 'package:tsutaeru/models/database/database_helper.dart';
 import 'package:tsutaeru/models/database/sqlite.dart';
 import 'package:tsutaeru/models/word_belonging.dart';
-import 'package:tsutaeru/models/words.dart';
+import 'package:tsutaeru/models/word.dart';
 
 class WordGroup extends DatabaseHelper {
   static const _columnId = "id";
@@ -53,7 +53,7 @@ class WordGroup extends DatabaseHelper {
   }
 
   @override
-  Future<List<Object>> readAll() async {
+  Future<List<WordGroup>> readAll() async {
     var list = await getAllRecord();
     List<WordGroup> r = [];
     for (var map in list) {
