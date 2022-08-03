@@ -1,14 +1,14 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:tsutaeru/models/database/sqlite_table.dart';
+import 'package:tsutaeru/models/database/sqlite.dart';
 
 void main() {
   // correct declaration
-  test("SQLiteTable Class getCreateTableSql test", () {
-    SQLiteTable t = SQLiteTable("tableName", [
-      TableColumnInfo("id", SqlDataType.text, primaryKey: true),
-      TableColumnInfo("name", SqlDataType.text),
-      TableColumnInfo("date", SqlDataType.integer),
-      TableColumnInfo("foreign_id", SqlDataType.integer,
+  test("SQLiteSchema Class getCreateTableSql test", () {
+    SQLiteSchema t = SQLiteSchema("tableName", [
+      SQLiteColumn("id", SQLiteDataType.text, primaryKey: true),
+      SQLiteColumn("name", SQLiteDataType.text),
+      SQLiteColumn("date", SQLiteDataType.integer),
+      SQLiteColumn("foreign_id", SQLiteDataType.integer,
           reference: "ref_table", referenceKey: "ref_key"),
     ]);
     String expected =
@@ -16,58 +16,58 @@ void main() {
     expect(t.getCreateTableSql(), expected);
 
     // set primary key on multiple columns
-    t = SQLiteTable("tableName", [
-      TableColumnInfo("id1", SqlDataType.text, primaryKey: true),
-      TableColumnInfo("id2", SqlDataType.text, primaryKey: true),
+    t = SQLiteSchema("tableName", [
+      SQLiteColumn("id1", SQLiteDataType.text, primaryKey: true),
+      SQLiteColumn("id2", SQLiteDataType.text, primaryKey: true),
     ]);
     expected =
         "CREATE TABLE tableName(id1 TEXT NOT NULL, id2 TEXT NOT NULL, PRIMARY KEY (id1, id2))";
     expect(t.getCreateTableSql(), expected);
   });
 
-  test("SQLiteTable Class getColumnMap test", () {
-    SQLiteTable t = SQLiteTable("tableName", [
-      TableColumnInfo("id1", SqlDataType.text, primaryKey: true),
-      TableColumnInfo("id2", SqlDataType.text, primaryKey: true),
-      TableColumnInfo("name", SqlDataType.text),
-      TableColumnInfo("date", SqlDataType.integer),
+  test("SQLiteSchema Class getColumnMap test", () {
+    SQLiteSchema t = SQLiteSchema("tableName", [
+      SQLiteColumn("id1", SQLiteDataType.text, primaryKey: true),
+      SQLiteColumn("id2", SQLiteDataType.text, primaryKey: true),
+      SQLiteColumn("name", SQLiteDataType.text),
+      SQLiteColumn("date", SQLiteDataType.integer),
     ]);
-    Map<String, String> expected = {
+    Map<String, dynamic> expected = {
       "id1": "",
       "id2": "",
       "name": "",
-      "date": ""
+      "date": 0
     };
     expect(t.getColumnMap(), expected);
     expect(t.getPrimaryKeys(), ["id1", "id2"]);
   });
 
-  // SQLiteTable class cannot empty string in tableName, columnName
-  test("SQLiteTable error handling about tableName", () {
-    SQLiteTable t = SQLiteTable("", [
-      TableColumnInfo("id", SqlDataType.text),
+  // SQLiteSchema class cannot empty in tableName, columnName
+  test("SQLiteSchema error handling about tableName", () {
+    SQLiteSchema t = SQLiteSchema("", [
+      SQLiteColumn("id", SQLiteDataType.text),
     ]);
 
     expect(() => t.getCreateTableSql(),
-        throwsA(const TypeMatcher<SQLiteTableError>()));
+        throwsA(const TypeMatcher<SQLiteSchemaError>()));
   });
 
-  test("SQLiteTable error handling about columnName", () {
-    SQLiteTable t = SQLiteTable("tableName", [
-      TableColumnInfo("", SqlDataType.text),
+  test("SQLiteSchema error handling about columnName", () {
+    SQLiteSchema t = SQLiteSchema("tableName", [
+      SQLiteColumn("", SQLiteDataType.text),
     ]);
 
     expect(() => t.getCreateTableSql(),
-        throwsA(const TypeMatcher<SQLiteTableError>()));
+        throwsA(const TypeMatcher<SQLiteSchemaError>()));
   });
 
   // primary key cannot be nullable
-  test("SQLiteTableError primary key is nullable", () {
-    SQLiteTable t = SQLiteTable("tableName", [
-      TableColumnInfo("id", SqlDataType.text),
+  test("SQLiteSchemaError primary key is nullable", () {
+    SQLiteSchema t = SQLiteSchema("tableName", [
+      SQLiteColumn("id", SQLiteDataType.text),
     ]);
 
     expect(() => t.getCreateTableSql(),
-        throwsA(const TypeMatcher<SQLiteTableError>()));
+        throwsA(const TypeMatcher<SQLiteSchemaError>()));
   });
 }

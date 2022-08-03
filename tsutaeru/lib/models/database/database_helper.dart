@@ -1,6 +1,7 @@
+import 'package:flutter/widgets.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
-import 'package:tsutaeru/models/database/sqlite_table.dart';
+import 'package:tsutaeru/models/database/sqlite.dart';
 import 'package:tsutaeru/values/internal.dart';
 import 'package:uuid/uuid.dart';
 
@@ -12,7 +13,7 @@ class DatabaseHelperError extends Error {
   String toString() {
     switch (type) {
       case DatabaseHelperErrorType.mapIsNotCorrect:
-        return "map received has Key that does not exist";
+        return "map received is not correct";
     }
   }
 }
@@ -20,30 +21,40 @@ class DatabaseHelperError extends Error {
 enum DatabaseHelperErrorType { mapIsNotCorrect }
 
 abstract class DatabaseHelper {
-  final SQLiteTable tableSchema;
+  final SQLiteSchema tableSchema;
   DatabaseHelper(this.tableSchema);
 
-  Future create();
-  Future readById(String targetId);
-  Future update();
-  Future delete();
+  // for front end developer
+  Future<void> create();
+  Future<void> readById(String targetId);
+  Future<List<Object>> readAll();
+  Future<void> update();
+  Future<void> delete();
 
   Future<Database> _openDB() async {
     return openDatabase(join(await getDatabasesPath(), databaseName),
-        onCreate: (db, version) {
-      return db.execute(tableSchema.getCreateTableSql());
+        onCreate: (db, version) async {
+      return await db.execute(tableSchema.getCreateTableSql());
     }, version: databaseVersion);
   }
 
   // CREATE
+  @protected
   Future<void> insert(Map<String, dynamic> map) async {
+    if (!testAllMapKey(map)) {
+      throw DatabaseHelperError(DatabaseHelperErrorType.mapIsNotCorrect);
+    }
     final db = await _openDB();
     await db.insert(tableSchema.getTableName(), map,
         conflictAlgorithm: ConflictAlgorithm.replace);
   }
 
   // READ
+  @protected
   Future<Map<String, dynamic>> getRecord(Map<String, dynamic> whereAnd) async {
+    if (!testSomeMapKey(whereAnd)) {
+      throw DatabaseHelperError(DatabaseHelperErrorType.mapIsNotCorrect);
+    }
     final db = await _openDB();
     Map<String, dynamic> map = tableSchema.getColumnMap();
 
@@ -51,8 +62,10 @@ abstract class DatabaseHelper {
     List<dynamic> whereArgs = [];
 
     whereAnd.forEach((key, value) {
-      where += "$key = ? and ";
-      whereArgs.add(value);
+      if (value != null) {
+        where += "$key = ? and ";
+        whereArgs.add(value);
+      }
     });
     where = where.substring(0, where.length - 5);
 
@@ -68,9 +81,40 @@ abstract class DatabaseHelper {
     return map;
   }
 
+  Future<List<Map<String, dynamic>>> getSomeRecord(
+      Map<String, dynamic> whereAnd) async {
+    if (!testSomeMapKey(whereAnd)) {
+      throw DatabaseHelperError(DatabaseHelperErrorType.mapIsNotCorrect);
+    }
+    final db = await _openDB();
+
+    String where = "";
+    List<dynamic> whereArgs = [];
+
+    whereAnd.forEach((key, value) {
+      if (value != null) {
+        where += "$key = ? and ";
+        whereArgs.add(value);
+      }
+    });
+    where = where.substring(0, where.length - 5);
+
+    var maps = await db.query(tableSchema.getTableName(),
+        where: where, whereArgs: whereArgs);
+
+    return maps;
+  }
+
+  Future<List<Map<String, dynamic>>> getAllRecord() async {
+    final db = await _openDB();
+    var maps = await db.query(tableSchema.getTableName());
+    return maps;
+  }
+
   // UPDATE
+  @protected
   Future<void> edit(Map<String, dynamic> map) async {
-    if (testAllMapKey(map)) {
+    if (!testAllMapKey(map)) {
       throw DatabaseHelperError(DatabaseHelperErrorType.mapIsNotCorrect);
     }
     final db = await _openDB();
@@ -78,7 +122,11 @@ abstract class DatabaseHelper {
   }
 
   // DELETE
+  @protected
   Future<void> destroy(Map<String, dynamic> whereAnd) async {
+    if (!testSomeMapKey(whereAnd)) {
+      throw DatabaseHelperError(DatabaseHelperErrorType.mapIsNotCorrect);
+    }
     final db = await _openDB();
 
     String where = "";
@@ -96,15 +144,27 @@ abstract class DatabaseHelper {
         where: where, whereArgs: whereArgs);
   }
 
+  // wrapper functions
+  String getTableName() {
+    return tableSchema.getTableName();
+  }
+
   Map<String, dynamic> getColumnMap() {
     return tableSchema.getColumnMap();
   }
 
+  List<String> getPrimaryKeys() {
+    return tableSchema.getPrimaryKeys();
+  }
+
+  // methods for sub class
+  @protected
   String createUuid() {
     Uuid uuid = const Uuid();
     return uuid.v4();
   }
 
+  @protected
   bool testAllMapKey(Map<String, dynamic> map) {
     Map<String, dynamic> fromSchema = tableSchema.getColumnMap();
     bool flag = true;
@@ -124,6 +184,7 @@ abstract class DatabaseHelper {
     return flag;
   }
 
+  @protected
   bool testSomeMapKey(Map<String, dynamic> map) {
     Map<String, dynamic> fromSchema = tableSchema.getColumnMap();
     bool flag = true;
@@ -135,5 +196,10 @@ abstract class DatabaseHelper {
     });
 
     return flag;
+  }
+
+  @protected
+  void callTestAnyMapError() {
+    throw DatabaseHelperError(DatabaseHelperErrorType.mapIsNotCorrect);
   }
 }

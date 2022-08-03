@@ -1,16 +1,16 @@
 import 'dart:typed_data';
 
-enum SqlDataType { integer, text, blob }
+enum SQLiteDataType { integer, text, blob }
 
-class TableColumnInfo {
+class SQLiteColumn {
   final String columnName;
-  final SqlDataType dataType;
+  final SQLiteDataType dataType;
   final bool nullable;
   final bool primaryKey;
   final String reference;
   final String referenceKey;
 
-  TableColumnInfo(
+  SQLiteColumn(
     this.columnName,
     this.dataType, {
     this.nullable = false,
@@ -20,37 +20,41 @@ class TableColumnInfo {
   });
 }
 
-class SQLiteTableError extends Error {
-  final String message;
-  SQLiteTableError(this.message);
+class SQLiteSchemaError extends Error {
+  final SQLSchemaErrorType type;
+  SQLiteSchemaError(this.type);
 
   @override
-  String toString() => message;
+  String toString() {
+    switch (type) {
+      case SQLSchemaErrorType.emptyTableName:
+        return "empty string cannot be specified in tableName";
+      case SQLSchemaErrorType.emptyColumnName:
+        return "empty string cannot be specified in columnName";
+      case SQLSchemaErrorType.nullablePrimaryKey:
+        return "primary key cannot be nullable";
+      case SQLSchemaErrorType.nonPrimaryKey:
+        return "table needs primary key";
+    }
+  }
 }
 
-class SQLiteTable {
+enum SQLSchemaErrorType {
+  emptyTableName,
+  emptyColumnName,
+  nullablePrimaryKey,
+  nonPrimaryKey,
+}
+
+class SQLiteSchema {
   final String _tableName;
-  final List<TableColumnInfo> _columns;
+  final List<SQLiteColumn> _columns;
 
-  SQLiteTable(this._tableName, this._columns);
-
-  String getTableName() {
-    return _tableName;
-  }
-
-  List<String> getPrimaryKeys() {
-    List<String> list = [];
-    for (var c in _columns) {
-      if (c.primaryKey) {
-        list.add(c.columnName);
-      }
-    }
-    return list;
-  }
+  SQLiteSchema(this._tableName, this._columns);
 
   String getCreateTableSql() {
     if (_tableName == "") {
-      throw SQLiteTableError("empty string cannot be specified in tableName");
+      throw SQLiteSchemaError(SQLSchemaErrorType.emptyTableName);
     }
 
     String sql = "CREATE TABLE $_tableName(";
@@ -58,29 +62,26 @@ class SQLiteTable {
     List<String> primaryKeys = [];
     List<List<String>> foreignKeys = [];
 
-    bool foundPK = false;
-
     for (var c in _columns) {
       String columnName = c.columnName;
 
       if (c.columnName == "") {
-        throw SQLiteTableError(
-            "empty string cannot be specified in columnName");
+        throw SQLiteSchemaError(SQLSchemaErrorType.emptyColumnName);
       }
 
       if (c.primaryKey && c.nullable) {
-        throw SQLiteTableError("primary key cannot be nullable");
+        throw SQLiteSchemaError(SQLSchemaErrorType.nullablePrimaryKey);
       }
 
       String type;
       switch (c.dataType) {
-        case SqlDataType.integer:
+        case SQLiteDataType.integer:
           type = "INTEGER";
           break;
-        case SqlDataType.text:
+        case SQLiteDataType.text:
           type = "TEXT";
           break;
-        case SqlDataType.blob:
+        case SQLiteDataType.blob:
           type = "BLOB";
           break;
       }
@@ -91,7 +92,6 @@ class SQLiteTable {
       }
 
       if (c.primaryKey) {
-        foundPK = true;
         primaryKeys.add(c.columnName);
       }
 
@@ -102,12 +102,8 @@ class SQLiteTable {
       sql += "$columnName $type$last";
     }
 
-    if (!foundPK) {
-      throw SQLiteTableError("one or more primary keys are required");
-    }
-
     if (primaryKeys.isEmpty) {
-      throw SQLiteTableError("table need primary key");
+      throw SQLiteSchemaError(SQLSchemaErrorType.nonPrimaryKey);
     }
 
     if (foreignKeys.isNotEmpty) {
@@ -122,28 +118,42 @@ class SQLiteTable {
       sql += "$pk, ";
     }
 
-    sql = "${sql.substring(0, sql.length - 2)}))";
+    sql = "${sql.substring(0, sql.length - 2)}));";
 
     return sql;
+  }
+
+  // they will be wrapped
+  String getTableName() {
+    return _tableName;
   }
 
   Map<String, dynamic> getColumnMap() {
     Map<String, dynamic> map = {};
     for (var c in _columns) {
       switch (c.dataType) {
-        case SqlDataType.integer:
+        case SQLiteDataType.integer:
           map.addAll({c.columnName: 0});
           break;
-        case SqlDataType.text:
+        case SQLiteDataType.text:
           map.addAll({c.columnName: ""});
           break;
-        case SqlDataType.blob:
+        case SQLiteDataType.blob:
           Uint8List byte = Uint8List(0);
           map.addAll({c.columnName: byte});
           break;
       }
     }
-
     return map;
+  }
+
+  List<String> getPrimaryKeys() {
+    List<String> list = [];
+    for (var c in _columns) {
+      if (c.primaryKey) {
+        list.add(c.columnName);
+      }
+    }
+    return list;
   }
 }
