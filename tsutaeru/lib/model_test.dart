@@ -82,6 +82,17 @@ class _ModelJointTestState extends State<ModelJointTest> {
           "id : ${v.id}\ntxt : ${v.textColor.toString()}\nbg : ${v.backgroundColor.toString()}\n";
     }
 
+    for (var v in readAllWords) {
+      _testString += "id: ${v.id}\nname: ${v.text}\ncolor: ${v.color.id}\n";
+    }
+
+    for (var v in readAllWordGroups) {
+      _testString += "id: ${v.name}\n";
+      for (var w in v.words) {
+        _testString += "    ${w.id}\n";
+      }
+    }
+
     setState(() {
       _testString += text;
     });

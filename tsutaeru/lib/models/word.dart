@@ -61,7 +61,10 @@ class Word extends DatabaseHelper {
     for (var map in list) {
       Word object = Word();
       object.id = map[_columnId];
-
+      object.text = map[_columnText];
+      var tmp = Color();
+      await tmp.readById(map[_columnColorId]);
+      object.color = tmp;
       r.add(object);
     }
     return r;
