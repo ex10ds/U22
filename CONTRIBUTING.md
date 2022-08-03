@@ -17,12 +17,12 @@ Issue駆動開発では次のようなライフサイクルで開発が進めら
 
 ## Projects
 
-当リポジトリの[Projects](https://github.com/IH-HAL20-GroupB/nopasokoubou/projects)にはフレームワークや技術スタックなどで分割されたいくつかのプロジェクトを追加していきます｡
+当リポジトリの[Projects](https://github.com/ex10ds/U22/projects?type=classic)にはフレームワークや技術スタックなどで分割されたいくつかのプロジェクトを追加していきます｡
 ProjectsはBasic Kanbanテンプレートで運用するため後述のIssuesと関連しています｡
 
 ## Issues
 
-当リポジトリの[Issues](https://github.com/IH-HAL20-GroupB/nopasokoubou/issues)には進行予定または進行中の作業を追加していきます｡
+当リポジトリの[Issues](https://github.com/ex10ds/U22/issues)には進行予定または進行中の作業を追加していきます｡
 IssueはどれかのProjectsに追加していくため参加したいIssueがある場合は関連付けられたProjectsからIssueのカードを“In progress”へ移動させてください｡
 
 ### Issueの作成
