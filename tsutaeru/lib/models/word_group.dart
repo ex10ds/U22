@@ -61,10 +61,11 @@ class WordGroup extends DatabaseHelper {
       object.id = map[_columnId];
       object.name = map[_columnName];
 
+      // word_group_id, word_id into "l"
       var l = await WordBelonging().readById(wordGroupId: object.id);
       for (var elem in l) {
         Word word = Word();
-        await word.readByMap(elem);
+        await word.readById(elem[UnsafeWordBelonging().getColWordId()]);
         object.words.add(word);
       }
       r.add(object);
