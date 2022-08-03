@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:tsutaeru/model_test.dart';
+import 'package:tsutaeru/widgets/my_app.dart';
 
 void main() {
-  runApp(const ModelJointTestWidget());
+  runApp(const MyApp());
 }
