@@ -12,7 +12,7 @@ class WordGroup extends DatabaseHelper {
   late List<Word> words;
 
   WordGroup()
-      : super(SQLiteSchema("word_groups", [
+      : super(SQLiteSchema("phrase_groups", [
           SQLiteColumn(_columnId, SQLiteDataType.text, primaryKey: true),
           SQLiteColumn(_columnName, SQLiteDataType.text),
         ])) {

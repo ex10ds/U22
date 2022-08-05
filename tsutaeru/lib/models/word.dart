@@ -13,7 +13,7 @@ class Word extends DatabaseHelper {
   late Color color;
 
   Word()
-      : super(SQLiteSchema("words", [
+      : super(SQLiteSchema("phrase", [
           SQLiteColumn(_columnId, SQLiteDataType.text, primaryKey: true),
           SQLiteColumn(_columnColorId, SQLiteDataType.text,
               reference: Color().getTableName(),

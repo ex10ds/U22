@@ -14,7 +14,7 @@ class Image extends DatabaseHelper {
   late Uint8List image;
 
   Image()
-      : super(SQLiteSchema("images", [
+      : super(SQLiteSchema("image", [
           SQLiteColumn(_columnId, SQLiteDataType.text, primaryKey: true),
           SQLiteColumn(_columnWordId, SQLiteDataType.text,
               reference: Word().getTableName(),

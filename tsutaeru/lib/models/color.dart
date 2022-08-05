@@ -13,7 +13,7 @@ class Color extends DatabaseHelper {
 
   // constructor
   Color()
-      : super(SQLiteSchema("colors", [
+      : super(SQLiteSchema("color", [
           // ... lumnInfo("COLUMN_NAME", DATA_TYPE)
           SQLiteColumn(_columnId, SQLiteDataType.text, primaryKey: true),
           SQLiteColumn(_columnTextColor, SQLiteDataType.integer),

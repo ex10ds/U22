@@ -19,7 +19,7 @@ class UnsafeWordBelonging extends DatabaseHelper {
   late String wordId;
 
   UnsafeWordBelonging()
-      : super(SQLiteSchema("words_belonging", [
+      : super(SQLiteSchema("phrase_belonging", [
           SQLiteColumn(_columnWordGroupId, SQLiteDataType.text,
               primaryKey: true,
               reference: WordGroup().tableSchema.getTableName(),
