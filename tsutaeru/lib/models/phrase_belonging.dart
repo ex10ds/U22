@@ -1,7 +1,7 @@
 import 'package:tsutaeru/models/database/database_helper.dart';
 import 'package:tsutaeru/models/database/sqlite.dart';
-import 'package:tsutaeru/models/word_group.dart';
-import 'package:tsutaeru/models/word.dart';
+import 'package:tsutaeru/models/phrase_group.dart';
+import 'package:tsutaeru/models/phrase.dart';
 
 class UnsafeWordBelonging extends DatabaseHelper {
   static const _columnWordGroupId = "word_group_id";
@@ -19,11 +19,11 @@ class UnsafeWordBelonging extends DatabaseHelper {
   late String wordId;
 
   UnsafeWordBelonging()
-      : super(SQLiteSchema("words_belonging", [
+      : super(SQLiteSchema("phrase_belonging", [
           SQLiteColumn(_columnWordGroupId, SQLiteDataType.text,
               primaryKey: true,
-              reference: WordGroup().tableSchema.getTableName(),
-              referenceKey: WordGroup().getPrimaryKeys()[0]),
+              reference: PhraseGroup().tableSchema.getTableName(),
+              referenceKey: PhraseGroup().getPrimaryKeys()[0]),
           SQLiteColumn(_columnWordId, SQLiteDataType.text,
               primaryKey: true,
               reference: Word().tableSchema.getTableName(),

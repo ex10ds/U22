@@ -1,9 +1,9 @@
 import 'package:tsutaeru/models/database/database_helper.dart';
 import 'package:tsutaeru/models/database/sqlite.dart';
-import 'package:tsutaeru/models/word_belonging.dart';
-import 'package:tsutaeru/models/word.dart';
+import 'package:tsutaeru/models/phrase_belonging.dart';
+import 'package:tsutaeru/models/phrase.dart';
 
-class WordGroup extends DatabaseHelper {
+class PhraseGroup extends DatabaseHelper {
   static const _columnId = "id";
   static const _columnName = "name";
 
@@ -11,8 +11,8 @@ class WordGroup extends DatabaseHelper {
   late String name;
   late List<Word> words;
 
-  WordGroup()
-      : super(SQLiteSchema("word_groups", [
+  PhraseGroup()
+      : super(SQLiteSchema("phrase_groups", [
           SQLiteColumn(_columnId, SQLiteDataType.text, primaryKey: true),
           SQLiteColumn(_columnName, SQLiteDataType.text),
         ])) {
@@ -53,11 +53,11 @@ class WordGroup extends DatabaseHelper {
   }
 
   @override
-  Future<List<WordGroup>> readAll() async {
+  Future<List<PhraseGroup>> readAll() async {
     var list = await getAllRecord();
-    List<WordGroup> r = [];
+    List<PhraseGroup> r = [];
     for (var map in list) {
-      WordGroup object = WordGroup();
+      PhraseGroup object = PhraseGroup();
       object.id = map[_columnId];
       object.name = map[_columnName];
 

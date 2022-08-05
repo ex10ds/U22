@@ -1,7 +1,7 @@
 import 'package:tsutaeru/models/color.dart';
 import 'package:tsutaeru/models/database/database_helper.dart';
 import 'package:tsutaeru/models/database/sqlite.dart';
-import 'package:tsutaeru/models/word_belonging.dart';
+import 'package:tsutaeru/models/phrase_belonging.dart';
 
 class Word extends DatabaseHelper {
   static const _columnId = "id";
@@ -13,7 +13,7 @@ class Word extends DatabaseHelper {
   late Color color;
 
   Word()
-      : super(SQLiteSchema("words", [
+      : super(SQLiteSchema("phrase", [
           SQLiteColumn(_columnId, SQLiteDataType.text, primaryKey: true),
           SQLiteColumn(_columnColorId, SQLiteDataType.text,
               reference: Color().getTableName(),

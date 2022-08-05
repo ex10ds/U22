@@ -2,7 +2,7 @@ import 'dart:typed_data';
 
 import 'package:tsutaeru/models/database/database_helper.dart';
 import 'package:tsutaeru/models/database/sqlite.dart';
-import 'package:tsutaeru/models/word.dart';
+import 'package:tsutaeru/models/phrase.dart';
 
 class Image extends DatabaseHelper {
   static const _columnId = "id";
@@ -14,7 +14,7 @@ class Image extends DatabaseHelper {
   late Uint8List image;
 
   Image()
-      : super(SQLiteSchema("images", [
+      : super(SQLiteSchema("image", [
           SQLiteColumn(_columnId, SQLiteDataType.text, primaryKey: true),
           SQLiteColumn(_columnWordId, SQLiteDataType.text,
               reference: Word().getTableName(),
