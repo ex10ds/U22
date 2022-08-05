@@ -22,8 +22,8 @@ class UnsafeWordBelonging extends DatabaseHelper {
       : super(SQLiteSchema("phrase_belonging", [
           SQLiteColumn(_columnWordGroupId, SQLiteDataType.text,
               primaryKey: true,
-              reference: WordGroup().tableSchema.getTableName(),
-              referenceKey: WordGroup().getPrimaryKeys()[0]),
+              reference: PhraseGroup().tableSchema.getTableName(),
+              referenceKey: PhraseGroup().getPrimaryKeys()[0]),
           SQLiteColumn(_columnWordId, SQLiteDataType.text,
               primaryKey: true,
               reference: Word().tableSchema.getTableName(),

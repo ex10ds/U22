@@ -28,7 +28,7 @@ void main() {
       {"id": ""},
       {"id": "", "name": "", "any": ""},
     ];
-    WordGroup color = WordGroup();
+    PhraseGroup color = PhraseGroup();
 
     expect(color.testAllMapKey(pattern[0]), true);
     expect(color.testAllMapKey(pattern[1]), false);
