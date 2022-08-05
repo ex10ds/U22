@@ -49,11 +49,11 @@ class _ModelJointTestState extends State<ModelJointTest> {
     color2.backgroundColor = 22222;
     await color2.create();
 
-    WordGroup wordGroup1 = WordGroup();
+    PhraseGroup wordGroup1 = PhraseGroup();
     wordGroup1.name = "group1";
     wordGroup1.create();
 
-    WordGroup wordGroup2 = WordGroup();
+    PhraseGroup wordGroup2 = PhraseGroup();
     wordGroup2.name = "group2";
     wordGroup2.create();
 
@@ -73,7 +73,7 @@ class _ModelJointTestState extends State<ModelJointTest> {
     // reading
     List<Color> readAllColors = await Color().readAll();
     List<Word> readAllWords = await Word().readAll();
-    List<WordGroup> readAllWordGroups = await WordGroup().readAll();
+    List<PhraseGroup> readAllWordGroups = await PhraseGroup().readAll();
 
     _testString = "";
     for (var v in readAllColors) {
