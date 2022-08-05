@@ -1,7 +1,7 @@
 import 'package:tsutaeru/models/database/database_helper.dart';
 import 'package:tsutaeru/models/database/sqlite.dart';
-import 'package:tsutaeru/models/word_group.dart';
-import 'package:tsutaeru/models/word.dart';
+import 'package:tsutaeru/models/phrase_group.dart';
+import 'package:tsutaeru/models/phrase.dart';
 
 class UnsafeWordBelonging extends DatabaseHelper {
   static const _columnWordGroupId = "word_group_id";

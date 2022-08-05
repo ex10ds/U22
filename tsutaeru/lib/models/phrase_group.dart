@@ -1,7 +1,7 @@
 import 'package:tsutaeru/models/database/database_helper.dart';
 import 'package:tsutaeru/models/database/sqlite.dart';
-import 'package:tsutaeru/models/word_belonging.dart';
-import 'package:tsutaeru/models/word.dart';
+import 'package:tsutaeru/models/phrase_belonging.dart';
+import 'package:tsutaeru/models/phrase.dart';
 
 class WordGroup extends DatabaseHelper {
   static const _columnId = "id";

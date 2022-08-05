@@ -2,7 +2,7 @@ import 'dart:typed_data';
 
 import 'package:tsutaeru/models/database/database_helper.dart';
 import 'package:tsutaeru/models/database/sqlite.dart';
-import 'package:tsutaeru/models/word.dart';
+import 'package:tsutaeru/models/phrase.dart';
 
 class Image extends DatabaseHelper {
   static const _columnId = "id";

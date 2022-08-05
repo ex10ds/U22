@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:tsutaeru/init_process.dart';
 import 'package:tsutaeru/models/color.dart';
-import 'package:tsutaeru/models/word_group.dart';
-import 'package:tsutaeru/models/word.dart';
-import 'package:tsutaeru/models/word_belonging.dart';
+import 'package:tsutaeru/models/phrase_group.dart';
+import 'package:tsutaeru/models/phrase.dart';
+import 'package:tsutaeru/models/phrase_belonging.dart';
 
 class ModelJointTestWidget extends StatelessWidget {
   const ModelJointTestWidget({Key? key}) : super(key: key);

@@ -2,9 +2,9 @@ import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:tsutaeru/models/color.dart';
 import 'package:tsutaeru/models/image.dart';
-import 'package:tsutaeru/models/word_belonging.dart';
-import 'package:tsutaeru/models/word_group.dart';
-import 'package:tsutaeru/models/word.dart';
+import 'package:tsutaeru/models/phrase_belonging.dart';
+import 'package:tsutaeru/models/phrase_group.dart';
+import 'package:tsutaeru/models/phrase.dart';
 import 'package:tsutaeru/values/internal.dart';
 
 Future<void> initDatabase() async {
