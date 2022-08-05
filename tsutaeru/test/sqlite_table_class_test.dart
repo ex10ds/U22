@@ -12,7 +12,7 @@ void main() {
           reference: "ref_table", referenceKey: "ref_key"),
     ]);
     String expected =
-        "CREATE TABLE tableName(id TEXT NOT NULL, name TEXT NOT NULL, date INTEGER NOT NULL, foreign_id INTEGER NOT NULL, FOREIGN KEY (foreign_id) REFERENCES ref_table (ref_key), PRIMARY KEY (id))";
+        "CREATE TABLE tableName(id TEXT NOT NULL, name TEXT NOT NULL, date INTEGER NOT NULL, foreign_id INTEGER NOT NULL, FOREIGN KEY (foreign_id) REFERENCES ref_table (ref_key), PRIMARY KEY (id));";
     expect(t.getCreateTableSql(), expected);
 
     // set primary key on multiple columns
@@ -21,7 +21,7 @@ void main() {
       SQLiteColumn("id2", SQLiteDataType.text, primaryKey: true),
     ]);
     expected =
-        "CREATE TABLE tableName(id1 TEXT NOT NULL, id2 TEXT NOT NULL, PRIMARY KEY (id1, id2))";
+        "CREATE TABLE tableName(id1 TEXT NOT NULL, id2 TEXT NOT NULL, PRIMARY KEY (id1, id2));";
     expect(t.getCreateTableSql(), expected);
   });
 
