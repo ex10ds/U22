@@ -1,3 +1,4 @@
+import 'package:sqflite/sqflite.dart';
 import 'package:tsutaeru/models/database/database_helper.dart';
 import 'package:tsutaeru/models/database/sqlite.dart';
 import 'package:tsutaeru/models/phrase_belonging.dart';
@@ -26,6 +27,12 @@ class PhraseGroup extends DatabaseHelper {
     var map = tableSchema.getColumnMap();
     id = createUuid();
     map[_columnId] = id;
+
+    if (name == "") {
+      throw DatabaseHelperException(
+          DatabaseHelperExceptionType.failedToInsertRecord);
+    }
+
     map[_columnName] = name;
 
     if (phrases.isNotEmpty) {

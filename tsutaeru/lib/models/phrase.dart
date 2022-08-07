@@ -30,6 +30,12 @@ class Phrase extends DatabaseHelper {
     var map = getColumnMap();
     id = createUuid();
     map[_columnId] = id;
+
+    if ((text == "") || (color.id == "")) {
+      throw DatabaseHelperException(
+          DatabaseHelperExceptionType.failedToInsertRecord);
+    }
+
     map[_columnText] = text;
     map[_columnColorId] = color.id;
     insert(map);
