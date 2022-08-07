@@ -9,7 +9,7 @@ class PhraseGroup extends DatabaseHelper {
 
   late String id;
   late String name;
-  late List<Word> words;
+  late List<Phrase> phrases;
 
   PhraseGroup()
       : super(SQLiteSchema("phrase_groups", [
@@ -18,7 +18,7 @@ class PhraseGroup extends DatabaseHelper {
         ])) {
     id = "";
     name = "";
-    words = [];
+    phrases = [];
   }
 
   @override
@@ -28,10 +28,10 @@ class PhraseGroup extends DatabaseHelper {
     map[_columnId] = id;
     map[_columnName] = name;
 
-    if (words.isNotEmpty) {
-      for (var word in words) {
-        WordBelonging()
-            .create(wordGroupId: getPrimaryKeys()[0], wordId: word.id);
+    if (phrases.isNotEmpty) {
+      for (var phrase in phrases) {
+        PhraseBelonging()
+            .create(phraseGroupId: getPrimaryKeys()[0], phraseId: phrase.id);
       }
     }
 
@@ -43,12 +43,12 @@ class PhraseGroup extends DatabaseHelper {
     var map = await getRecord({getPrimaryKeys()[0]: targetId});
     id = map[_columnId];
     name = map[_columnName];
-    var list = await WordBelonging().readById(wordGroupId: id);
-    words = [];
+    var list = await PhraseBelonging().readById(phraseGroupId: id);
+    phrases = [];
     for (var elem in list) {
-      Word word = Word();
-      await word.readByMap(elem);
-      words.add(word);
+      Phrase phrase = Phrase();
+      await phrase.readByMap(elem);
+      phrases.add(phrase);
     }
   }
 
@@ -61,12 +61,12 @@ class PhraseGroup extends DatabaseHelper {
       object.id = map[_columnId];
       object.name = map[_columnName];
 
-      // word_group_id, word_id into "l"
-      var l = await WordBelonging().readById(wordGroupId: object.id);
+      // phrase_group_id, phrase_id into "l"
+      var l = await PhraseBelonging().readById(phraseGroupId: object.id);
       for (var elem in l) {
-        Word word = Word();
-        await word.readById(elem[UnsafeWordBelonging().getColWordId()]);
-        object.words.add(word);
+        Phrase phrase = Phrase();
+        await phrase.readById(elem[UnsafePhraseBelonging().getColPhraseId()]);
+        object.phrases.add(phrase);
       }
       r.add(object);
     }
@@ -80,17 +80,17 @@ class PhraseGroup extends DatabaseHelper {
     map[_columnName] = name;
     edit(map);
 
-    if (words.isNotEmpty) {
-      for (var word in words) {
-        WordBelonging()
-            .create(wordGroupId: getPrimaryKeys()[0], wordId: word.id);
+    if (phrases.isNotEmpty) {
+      for (var phrase in phrases) {
+        PhraseBelonging()
+            .create(phraseGroupId: getPrimaryKeys()[0], phraseId: phrase.id);
       }
     }
   }
 
   @override
   Future<void> delete() async {
-    WordBelonging().delete(wordGroupId: id);
+    PhraseBelonging().delete(phraseGroupId: id);
     destroy({getPrimaryKeys()[0]: id});
   }
 }

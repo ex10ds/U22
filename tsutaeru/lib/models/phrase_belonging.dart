@@ -3,107 +3,110 @@ import 'package:tsutaeru/models/database/sqlite.dart';
 import 'package:tsutaeru/models/phrase_group.dart';
 import 'package:tsutaeru/models/phrase.dart';
 
-class UnsafeWordBelonging extends DatabaseHelper {
-  static const _columnWordGroupId = "word_group_id";
-  static const _columnWordId = "word_id";
+class UnsafePhraseBelonging extends DatabaseHelper {
+  static const _columnPhraseGroupId = "phrase_group_id";
+  static const _columnPhraseId = "phrase_id";
 
-  String getColWordGroupId() {
-    return _columnWordGroupId;
+  String getColPhraseGroupId() {
+    return _columnPhraseGroupId;
   }
 
-  String getColWordId() {
-    return _columnWordId;
+  String getColPhraseId() {
+    return _columnPhraseId;
   }
 
-  late String wordGroupId;
-  late String wordId;
+  late String phraseGroupId;
+  late String phraseId;
 
-  UnsafeWordBelonging()
+  UnsafePhraseBelonging()
       : super(SQLiteSchema("phrase_belonging", [
-          SQLiteColumn(_columnWordGroupId, SQLiteDataType.text,
+          SQLiteColumn(_columnPhraseGroupId, SQLiteDataType.text,
               primaryKey: true,
               reference: PhraseGroup().tableSchema.getTableName(),
               referenceKey: PhraseGroup().getPrimaryKeys()[0]),
-          SQLiteColumn(_columnWordId, SQLiteDataType.text,
+          SQLiteColumn(_columnPhraseId, SQLiteDataType.text,
               primaryKey: true,
-              reference: Word().tableSchema.getTableName(),
-              referenceKey: Word().getPrimaryKeys()[0]),
+              reference: Phrase().tableSchema.getTableName(),
+              referenceKey: Phrase().getPrimaryKeys()[0]),
         ])) {
-    wordGroupId = "";
-    wordId = "";
+    phraseGroupId = "";
+    phraseId = "";
   }
 
   @override
-  Future<void> create({String wordGroupId = "", String wordId = ""}) async {
+  Future<void> create({String phraseGroupId = "", String phraseId = ""}) async {
     var map = getColumnMap();
-    map[_columnWordGroupId] = wordGroupId;
-    map[_columnWordId] = wordId;
+    map[_columnPhraseGroupId] = phraseGroupId;
+    map[_columnPhraseId] = phraseId;
     insert(map);
   }
 
   @override
   Future<List<Map<String, dynamic>>> readById(String targetId) async {
-    var list = await getSomeRecord({_columnWordGroupId: targetId});
+    var list = await getSomeRecord({_columnPhraseGroupId: targetId});
     return list;
   }
 
   @override
-  Future<List<UnsafeWordBelonging>> readAll() async {
+  Future<List<UnsafePhraseBelonging>> readAll() async {
     var list = await getAllRecord();
-    List<UnsafeWordBelonging> wb = [];
+    List<UnsafePhraseBelonging> fb = [];
     for (var elem in list) {
-      var tmp = UnsafeWordBelonging();
-      tmp.wordGroupId = elem[_columnWordGroupId];
-      tmp.wordId = elem[_columnWordId];
-      wb.add(tmp);
+      var tmp = UnsafePhraseBelonging();
+      tmp.phraseGroupId = elem[_columnPhraseGroupId];
+      tmp.phraseId = elem[_columnPhraseId];
+      fb.add(tmp);
     }
-    return wb;
+    return fb;
   }
 
   @override
-  Future<void> update({String wordGroupId = "", String wordId = ""}) async {
+  Future<void> update({String phraseGroupId = "", String phraseId = ""}) async {
     var map = getColumnMap();
-    map[_columnWordGroupId] = wordGroupId;
-    map[_columnWordId] = wordId;
+    map[_columnPhraseGroupId] = phraseGroupId;
+    map[_columnPhraseId] = phraseId;
     edit(map);
   }
 
   @override
-  Future<void> delete({String wordGroupId = "", String wordId = ""}) async {
-    if (wordGroupId != "" && wordGroupId != "") {
-      await destroy({_columnWordGroupId: wordGroupId, _columnWordId: wordId});
-    } else if (wordGroupId != "") {
-      await destroy({_columnWordGroupId: wordGroupId});
-    } else if (wordId != "") {
-      await destroy({_columnWordId: wordId});
+  Future<void> delete({String phraseGroupId = "", String phraseId = ""}) async {
+    if (phraseGroupId != "" && phraseGroupId != "") {
+      await destroy(
+          {_columnPhraseGroupId: phraseGroupId, _columnPhraseId: phraseId});
+    } else if (phraseGroupId != "") {
+      await destroy({_columnPhraseGroupId: phraseGroupId});
+    } else if (phraseId != "") {
+      await destroy({_columnPhraseId: phraseId});
     }
   }
 }
 
 // wrapped class
-class WordBelonging {
-  final UnsafeWordBelonging wb = UnsafeWordBelonging();
+class PhraseBelonging {
+  final UnsafePhraseBelonging fb = UnsafePhraseBelonging();
 
-  Future<void> create({String wordGroupId = "", String wordId = ""}) async {
-    wb.create(wordGroupId: wordGroupId, wordId: wordId);
+  Future<void> create({String phraseGroupId = "", String phraseId = ""}) async {
+    fb.create(phraseGroupId: phraseGroupId, phraseId: phraseId);
   }
 
   Future<List<Map<String, dynamic>>> readById(
-      {String wordGroupId = "", String wordId = ""}) async {
+      {String phraseGroupId = "", String phraseId = ""}) async {
     List<Map<String, dynamic>> list = [];
-    if (wordGroupId != "" && wordId != "") {
-      list = await wb.getSomeRecord(
-          {wb.getColWordGroupId(): wordGroupId, wb.getColWordId(): wordId});
-    } else if (wordGroupId != "") {
-      list = await wb.getSomeRecord({wb.getColWordGroupId(): wordGroupId});
-    } else if (wordId != "") {
-      list = await wb.getSomeRecord({wb.getColWordId(): wordId});
+    if (phraseGroupId != "" && phraseId != "") {
+      list = await fb.getSomeRecord({
+        fb.getColPhraseGroupId(): phraseGroupId,
+        fb.getColPhraseId(): phraseId
+      });
+    } else if (phraseGroupId != "") {
+      list = await fb.getSomeRecord({fb.getColPhraseGroupId(): phraseGroupId});
+    } else if (phraseId != "") {
+      list = await fb.getSomeRecord({fb.getColPhraseId(): phraseId});
     }
     return list;
   }
 
   // remove from group
-  Future<void> delete({String wordGroupId = "", String wordId = ""}) async {
-    wb.delete(wordGroupId: wordGroupId, wordId: wordId);
+  Future<void> delete({String phraseGroupId = "", String phraseId = ""}) async {
+    fb.delete(phraseGroupId: phraseGroupId, phraseId: phraseId);
   }
 }
