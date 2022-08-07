@@ -12,8 +12,8 @@ Future<void> initDatabase() async {
       onCreate: (db, version) async {
     await db.execute(Color().tableSchema.getCreateTableSql());
     await db.execute(PhraseGroup().tableSchema.getCreateTableSql());
-    await db.execute(Word().tableSchema.getCreateTableSql());
+    await db.execute(Phrase().tableSchema.getCreateTableSql());
     await db.execute(Image().tableSchema.getCreateTableSql());
-    await db.execute(UnsafeWordBelonging().tableSchema.getCreateTableSql());
+    await db.execute(UnsafePhraseBelonging().tableSchema.getCreateTableSql());
   }, version: databaseVersion);
 }

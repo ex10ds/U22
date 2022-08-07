@@ -49,31 +49,33 @@ class _ModelJointTestState extends State<ModelJointTest> {
     color2.backgroundColor = 22222;
     await color2.create();
 
-    PhraseGroup wordGroup1 = PhraseGroup();
-    wordGroup1.name = "group1";
-    wordGroup1.create();
+    PhraseGroup phraseGroup1 = PhraseGroup();
+    phraseGroup1.name = "group1";
+    phraseGroup1.create();
 
-    PhraseGroup wordGroup2 = PhraseGroup();
-    wordGroup2.name = "group2";
-    wordGroup2.create();
+    PhraseGroup phraseGroup2 = PhraseGroup();
+    phraseGroup2.name = "group2";
+    phraseGroup2.create();
 
-    Word word1 = Word();
-    word1.text = "word1";
-    word1.color = color1;
-    await word1.create();
+    Phrase phrase1 = Phrase();
+    phrase1.text = "phrase1";
+    phrase1.color = color1;
+    await phrase1.create();
 
-    Word word2 = Word();
-    word2.text = "word2";
-    word2.color = color2;
-    word2.create();
+    Phrase phrase2 = Phrase();
+    phrase2.text = "phrase2";
+    phrase2.color = color2;
+    phrase2.create();
 
-    WordBelonging().create(wordGroupId: wordGroup1.id, wordId: word1.id);
-    WordBelonging().create(wordGroupId: wordGroup2.id, wordId: word2.id);
+    PhraseBelonging()
+        .create(phraseGroupId: phraseGroup1.id, phraseId: phrase1.id);
+    PhraseBelonging()
+        .create(phraseGroupId: phraseGroup2.id, phraseId: phrase2.id);
 
     // reading
     List<Color> readAllColors = await Color().readAll();
-    List<Word> readAllWords = await Word().readAll();
-    List<PhraseGroup> readAllWordGroups = await PhraseGroup().readAll();
+    List<Phrase> readAllPhrases = await Phrase().readAll();
+    List<PhraseGroup> readAllPhraseGroups = await PhraseGroup().readAll();
 
     _testString = "";
     for (var v in readAllColors) {
@@ -81,13 +83,13 @@ class _ModelJointTestState extends State<ModelJointTest> {
           "id : ${v.id}\ntxt : ${v.textColor.toString()}\nbg : ${v.backgroundColor.toString()}\n";
     }
 
-    for (var v in readAllWords) {
+    for (var v in readAllPhrases) {
       _testString += "id: ${v.id}\nname: ${v.text}\ncolor: ${v.color.id}\n";
     }
 
-    for (var v in readAllWordGroups) {
+    for (var v in readAllPhraseGroups) {
       _testString += "id: ${v.name}\n";
-      for (var w in v.words) {
+      for (var w in v.phrases) {
         _testString += "    ${w.id}\n";
       }
     }

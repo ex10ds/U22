@@ -3,7 +3,7 @@ import 'package:tsutaeru/models/database/database_helper.dart';
 import 'package:tsutaeru/models/database/sqlite.dart';
 import 'package:tsutaeru/models/phrase_belonging.dart';
 
-class Word extends DatabaseHelper {
+class Phrase extends DatabaseHelper {
   static const _columnId = "id";
   static const _columnText = "text";
   static const _columnColorId = "color_id";
@@ -12,7 +12,7 @@ class Word extends DatabaseHelper {
   late String text;
   late Color color;
 
-  Word()
+  Phrase()
       : super(SQLiteSchema("phrase", [
           SQLiteColumn(_columnId, SQLiteDataType.text, primaryKey: true),
           SQLiteColumn(_columnColorId, SQLiteDataType.text,
@@ -55,11 +55,11 @@ class Word extends DatabaseHelper {
   }
 
   @override
-  Future<List<Word>> readAll() async {
+  Future<List<Phrase>> readAll() async {
     var list = await getAllRecord();
-    List<Word> r = [];
+    List<Phrase> r = [];
     for (var map in list) {
-      Word object = Word();
+      Phrase object = Phrase();
       object.id = map[_columnId];
       object.text = map[_columnText];
       var tmp = Color();
@@ -81,7 +81,7 @@ class Word extends DatabaseHelper {
 
   @override
   Future<void> delete() async {
-    WordBelonging().delete(wordId: id);
+    PhraseBelonging().delete(phraseId: id);
     destroy({_columnId: id});
   }
 }

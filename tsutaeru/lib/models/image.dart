@@ -6,23 +6,23 @@ import 'package:tsutaeru/models/phrase.dart';
 
 class Image extends DatabaseHelper {
   static const _columnId = "id";
-  static const _columnWordId = "word_id";
+  static const _columnPhraseId = "phrase_id";
   static const _columnImage = "image";
 
   late String id;
-  late String wordId;
+  late String phraseId;
   late Uint8List image;
 
   Image()
       : super(SQLiteSchema("image", [
           SQLiteColumn(_columnId, SQLiteDataType.text, primaryKey: true),
-          SQLiteColumn(_columnWordId, SQLiteDataType.text,
-              reference: Word().getTableName(),
-              referenceKey: Word().getPrimaryKeys()[0]),
+          SQLiteColumn(_columnPhraseId, SQLiteDataType.text,
+              reference: Phrase().getTableName(),
+              referenceKey: Phrase().getPrimaryKeys()[0]),
           SQLiteColumn(_columnImage, SQLiteDataType.blob),
         ])) {
     id = "";
-    wordId = "";
+    phraseId = "";
     image = Uint8List(0);
   }
 
@@ -31,18 +31,18 @@ class Image extends DatabaseHelper {
     var map = getColumnMap();
     id = createUuid();
     map[_columnId] = id;
-    map[_columnWordId] = wordId;
+    map[_columnPhraseId] = phraseId;
     map[_columnImage] = image;
     insert(map);
   }
 
-  Future<List<Image>> readByWordId(String wordId) async {
-    var list = await getSomeRecord({Word().getPrimaryKeys()[0]: wordId});
+  Future<List<Image>> readByPhraseId(String phraseId) async {
+    var list = await getSomeRecord({Phrase().getPrimaryKeys()[0]: phraseId});
     List<Image> images = [];
     for (var map in list) {
       Image tmp = Image();
       tmp.id = map[_columnId];
-      tmp.wordId = map[_columnWordId];
+      tmp.phraseId = map[_columnPhraseId];
       tmp.image = map[_columnImage];
       images.add(tmp);
     }
@@ -54,7 +54,7 @@ class Image extends DatabaseHelper {
     final pk = getPrimaryKeys()[0];
     var map = await getRecord({pk: targetId});
     id = map[_columnId];
-    wordId = map[_columnWordId];
+    phraseId = map[_columnPhraseId];
     image = map[_columnImage];
   }
 
@@ -65,7 +65,7 @@ class Image extends DatabaseHelper {
     for (var map in list) {
       Image object = Image();
       object.id = map[_columnId];
-      object.wordId = map[_columnWordId];
+      object.phraseId = map[_columnPhraseId];
       object.image = map[_columnImage];
       r.add(object);
     }
@@ -76,7 +76,7 @@ class Image extends DatabaseHelper {
   Future<void> update() async {
     var map = getColumnMap();
     map[_columnId] = id;
-    map[_columnWordId] = wordId;
+    map[_columnPhraseId] = phraseId;
     map[_columnImage] = image;
     edit(map);
   }
