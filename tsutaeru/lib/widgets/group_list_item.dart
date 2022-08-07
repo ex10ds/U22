@@ -1,36 +1,6 @@
 // グループリスト内一つずつのアイテムWidget
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
-// class GroupListItem extends StatefulWidget {
-//   const GroupListItem(language, {Key? key}) : super(key: key);
-
-//   @override
-//   State<GroupListItem> createState() => _GroupListItemState();
-// }
-
-// class _GroupListItemState extends State<GroupListItem> {
-//   @override
-//   Widget build(BuildContext context) {
-//     return GestureDetector(
-//       onTap: () {
-//         // print('Button Click');
-//       },
-//       child: Container(
-//         height: 50.0,
-//         padding: const EdgeInsets.all(8.0),
-//         margin: const EdgeInsets.symmetric(horizontal: 8.0),
-//         decoration: BoxDecoration(
-//           borderRadius: BorderRadius.circular(5.0),
-//           color: Colors.lightGreen[500],
-//         ),
-//         child: const Center(
-//           child: Text('Engage'),
-//         ),
-//       ),
-//     );
-//   }
-// }
+import 'package:tsutaeru/widgets/phrase_list.dart';
 
 class GroupListItem extends StatelessWidget {
   final String title;
@@ -40,7 +10,10 @@ class GroupListItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        // print('Button Click');
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => PhraseList(groupName: title)));
       },
       child: Container(
         height: 50.0,
