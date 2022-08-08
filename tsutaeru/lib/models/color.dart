@@ -14,7 +14,7 @@ class Color extends DatabaseHelper {
   // constructor
   Color()
       : super(SQLiteSchema("color", [
-          // ... lumnInfo("COLUMN_NAME", DATA_TYPE)
+          // ... olumn("COLUMN_NAME", DATA_TYPE)
           SQLiteColumn(_columnId, SQLiteDataType.text, primaryKey: true),
           SQLiteColumn(_columnTextColor, SQLiteDataType.integer),
           SQLiteColumn(_columnBackgroundColor, SQLiteDataType.integer),
@@ -27,8 +27,13 @@ class Color extends DatabaseHelper {
   @override
   Future<void> create() async {
     var map = getColumnMap();
-    id = createUuid();
+
+    if (id == "") {
+      id = createUuid();
+    }
+
     map[_columnId] = id;
+
     map[_columnTextColor] = textColor;
     map[_columnBackgroundColor] = backgroundColor;
     insert(map);

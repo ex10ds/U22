@@ -1,17 +1,34 @@
 // フレーズ一覧Widget
 
 import 'package:flutter/material.dart';
+import 'package:tsutaeru/models/phrase.dart';
+import 'package:tsutaeru/models/phrase_group.dart';
 
 class PhraseList extends StatefulWidget {
-  final String groupName;
-  const PhraseList({Key? key, required this.groupName}) : super(key: key);
+  final String groupName, groupId;
+  const PhraseList({Key? key, required this.groupId, required this.groupName})
+      : super(key: key);
 
   @override
   State<PhraseList> createState() => _PhraseListState();
 }
 
 class _PhraseListState extends State<PhraseList> {
-  static const List<String> data = ["一覧こんなふう", "一覧こんなふう", "一覧こんなふう"];
+  List<Phrase> _phrases = [];
+
+  Future<void> _setPhrases() async {
+    var tmp = PhraseGroup();
+    await tmp.readById(widget.groupId);
+    setState(() {
+      _phrases = tmp.phrases;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _setPhrases();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -22,10 +39,8 @@ class _PhraseListState extends State<PhraseList> {
           leading: const Icon(Icons.place),
           title: Text(widget.groupName),
         ),
-        ...data
-            .map((String phrase) => ListTile(
-                  title: Text(phrase),
-                ))
+        ..._phrases
+            .map((Phrase phrase) => ListTile(title: Text(phrase.text)))
             .toList()
       ])),
     );

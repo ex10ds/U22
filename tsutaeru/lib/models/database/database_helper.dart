@@ -20,6 +20,21 @@ class DatabaseHelperError extends Error {
 
 enum DatabaseHelperErrorType { mapIsNotCorrect }
 
+class DatabaseHelperException implements Exception {
+  final DatabaseHelperExceptionType type;
+  DatabaseHelperException(this.type);
+
+  @override
+  String toString() {
+    switch (type) {
+      case DatabaseHelperExceptionType.failedToInsertRecord:
+        return "failed to insert a record";
+    }
+  }
+}
+
+enum DatabaseHelperExceptionType { failedToInsertRecord }
+
 abstract class DatabaseHelper {
   final SQLiteSchema tableSchema;
   DatabaseHelper(this.tableSchema);

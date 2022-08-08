@@ -31,6 +31,12 @@ class Image extends DatabaseHelper {
     var map = getColumnMap();
     id = createUuid();
     map[_columnId] = id;
+
+    if ((image.isEmpty) || phraseId == "") {
+      throw DatabaseHelperException(
+          DatabaseHelperExceptionType.failedToInsertRecord);
+    }
+
     map[_columnPhraseId] = phraseId;
     map[_columnImage] = image;
     insert(map);
