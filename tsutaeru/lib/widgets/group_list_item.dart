@@ -3,8 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:tsutaeru/widgets/phrase_list.dart';
 
 class GroupListItem extends StatelessWidget {
-  final String title;
-  const GroupListItem({Key? key, required this.title}) : super(key: key);
+  final String groupId, title;
+  const GroupListItem({Key? key, required this.groupId, required this.title})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -13,7 +14,8 @@ class GroupListItem extends StatelessWidget {
         Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) => PhraseList(groupName: title)));
+                builder: (context) =>
+                    PhraseList(groupId: groupId, groupName: title)));
       },
       child: Container(
         height: 50.0,

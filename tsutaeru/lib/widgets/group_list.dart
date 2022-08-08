@@ -36,7 +36,10 @@ class _GroupListState extends State<GroupList> {
         crossAxisCount: 2,
         padding: const EdgeInsets.only(top: 40),
         children: _groups
-            .map((PhraseGroup group) => GroupListItem(title: group.name))
+            .map((PhraseGroup group) => GroupListItem(
+                  groupId: group.id,
+                  title: group.name,
+                ))
             .toList(),
       ),
     ));
