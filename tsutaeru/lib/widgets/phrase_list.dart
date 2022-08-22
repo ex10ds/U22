@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:tsutaeru/models/phrase.dart';
 import 'package:tsutaeru/models/phrase_group.dart';
+import 'package:tsutaeru/widgets/add_phrase.dart';
 
 class PhraseList extends StatefulWidget {
   final String groupName, groupId;
@@ -32,17 +33,26 @@ class _PhraseListState extends State<PhraseList> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-          body: ListView(children: [
+    return Scaffold(
+      appBar: AppBar(title: Text(widget.groupName)),
+      body: ListView(children: [
         ListTile(
-          leading: const Icon(Icons.place),
-          title: Text(widget.groupName),
+          leading: const Icon(Icons.add),
+          title: const Text("新規追加"),
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => AddPhrase(
+                    groupId: widget.groupId, groupName: widget.groupName),
+              ),
+            );
+          },
         ),
         ..._phrases
             .map((Phrase phrase) => ListTile(title: Text(phrase.text)))
             .toList()
-      ])),
+      ]),
     );
   }
 }

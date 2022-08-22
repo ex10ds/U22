@@ -23,7 +23,7 @@ class GroupListItem extends StatelessWidget {
         margin: const EdgeInsets.symmetric(horizontal: 8.0),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(5.0),
-          color: Colors.lightGreen[500],
+          color: const Color.fromARGB(255, 209, 255, 157),
         ),
         child: Center(
           child: Text(title),
