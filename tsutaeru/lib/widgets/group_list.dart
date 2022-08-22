@@ -1,6 +1,7 @@
 // グループ一覧表示Widget
 import 'package:flutter/material.dart';
 import 'package:tsutaeru/models/phrase_group.dart';
+import 'package:tsutaeru/values/strings.dart';
 import 'package:tsutaeru/widgets/group_list_item.dart';
 
 class GroupList extends StatefulWidget {
@@ -32,7 +33,7 @@ class _GroupListState extends State<GroupList> {
         theme: ThemeData(primarySwatch: Colors.cyan),
         home: Scaffold(
           appBar: AppBar(
-            title: const Text("Tsutaeru"),
+            title: const Text(appName),
             centerTitle: true,
             actions: [
               IconButton(onPressed: () {}, icon: const Icon(Icons.settings))
@@ -65,7 +66,7 @@ class _GroupListState extends State<GroupList> {
                     color: const Color.fromARGB(255, 144, 242, 255),
                   ),
                   child: const Center(
-                    child: Text("All phrase"),
+                    child: Text(allPhrases),
                   ),
                 ),
                 ..._groups
