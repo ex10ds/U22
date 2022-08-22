@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:tsutaeru/models/phrase.dart';
 import 'package:tsutaeru/models/phrase_group.dart';
+import 'package:tsutaeru/values/strings.dart';
 import 'package:tsutaeru/widgets/add_phrase.dart';
 
 class PhraseList extends StatefulWidget {
@@ -38,7 +39,7 @@ class _PhraseListState extends State<PhraseList> {
       body: ListView(children: [
         ListTile(
           leading: const Icon(Icons.add),
-          title: const Text("新規追加"),
+          title: const Text(add),
           onTap: () {
             Navigator.push(
               context,
