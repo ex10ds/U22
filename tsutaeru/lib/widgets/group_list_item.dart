@@ -1,5 +1,6 @@
 // グループリスト内一つずつのアイテムWidget
 import 'package:flutter/material.dart';
+import 'package:tsutaeru/values/strings.dart';
 import 'package:tsutaeru/widgets/phrase_list.dart';
 
 class GroupListItem extends StatelessWidget {
@@ -25,8 +26,24 @@ class GroupListItem extends StatelessWidget {
           borderRadius: BorderRadius.circular(5.0),
           color: const Color.fromARGB(255, 209, 255, 157),
         ),
-        child: Center(
-          child: Text(title),
+        alignment: Alignment.center,
+        child: Column(
+          children: [
+            Align(
+              alignment: Alignment.topRight,
+              child: PopupMenuButton(
+                  itemBuilder: (BuildContext context) => <PopupMenuEntry>[
+                        PopupMenuItem(
+                            onTap: () {},
+                            value: groupId,
+                            child: const Text(AppString.delete)),
+                      ]),
+            ),
+            Container(
+              padding: const EdgeInsets.only(top: 35),
+              child: (Text(title)),
+            )
+          ],
         ),
       ),
     );
