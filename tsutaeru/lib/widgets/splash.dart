@@ -46,7 +46,7 @@ class SplashWidget extends StatelessWidget {
         body: Center(
           child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: const [FlutterLogo(), Text(appName)]),
+              children: const [FlutterLogo(), Text(AppString.appName)]),
         ),
       ),
     );

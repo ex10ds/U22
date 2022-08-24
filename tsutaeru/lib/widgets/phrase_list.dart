@@ -39,7 +39,7 @@ class _PhraseListState extends State<PhraseList> {
       body: ListView(children: [
         ListTile(
           leading: const Icon(Icons.add),
-          title: const Text(add),
+          title: const Text(AppString.add),
           onTap: () {
             Navigator.push(
               context,

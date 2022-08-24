@@ -39,7 +39,7 @@ class _GroupListState extends State<GroupList> {
         theme: ThemeData(primarySwatch: Colors.cyan),
         home: Scaffold(
           appBar: AppBar(
-            title: const Text(appName),
+            title: const Text(AppString.appName),
             centerTitle: true,
             actions: [
               IconButton(onPressed: () {}, icon: const Icon(Icons.settings))
@@ -72,7 +72,7 @@ class _GroupListState extends State<GroupList> {
                     color: const Color.fromARGB(255, 144, 242, 255),
                   ),
                   child: const Center(
-                    child: Text(allPhrases),
+                    child: Text(AppString.allPhrases),
                   ),
                 ),
                 ..._groups

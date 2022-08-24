@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tsutaeru/models/phrase.dart';
+import 'package:tsutaeru/values/strings.dart';
 
 class AddPhrase extends StatelessWidget {
   final String groupName, groupId;
@@ -16,15 +16,16 @@ class AddPhrase extends StatelessWidget {
         padding: const EdgeInsets.all(50),
         child: Column(
           children: [
-            const Text("Phrase"),
+            const Text(AppString.phrase),
             TextFormField(
               enabled: true,
-              decoration: const InputDecoration(labelText: "Enter here"),
+              decoration:
+                  const InputDecoration(labelText: AppString.inputNewPhrase),
             ),
             Padding(
                 padding: const EdgeInsets.all(12),
                 child: ElevatedButton(
-                    onPressed: () {}, child: const Text("confirm")))
+                    onPressed: () {}, child: const Text(AppString.addPhrase)))
           ],
         ),
       ),
