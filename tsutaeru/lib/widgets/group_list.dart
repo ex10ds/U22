@@ -1,4 +1,6 @@
 // グループ一覧表示Widget
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:tsutaeru/models/phrase_group.dart';
 import 'package:tsutaeru/values/strings.dart';
@@ -19,6 +21,10 @@ class _GroupListState extends State<GroupList> {
     setState(() {
       _groups = tmp;
     });
+  }
+
+  Future<void> deleteGroup() async {
+    setGroups();
   }
 
   @override
@@ -70,9 +76,12 @@ class _GroupListState extends State<GroupList> {
                   ),
                 ),
                 ..._groups
-                    .map((PhraseGroup group) => GroupListItem(
-                          groupId: group.id,
-                          title: group.name,
+                    .asMap()
+                    .entries
+                    .map((entry) => GroupListItem(
+                          groupId: entry.value.id,
+                          title: entry.value.name,
+                          setGroups: setGroups(),
                         ))
                     .toList(),
               ]),
