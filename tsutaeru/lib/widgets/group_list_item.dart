@@ -51,7 +51,8 @@ class GroupListItem extends StatelessWidget {
                   },
                   itemBuilder: (BuildContext context) => <PopupMenuEntry>[
                         PopupMenuItem(
-                            value: groupId, child: const Text(delete)),
+                            value: groupId,
+                            child: const Text(AppString.delete)),
                       ]),
             ),
             Container(
