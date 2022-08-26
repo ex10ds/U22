@@ -9,4 +9,5 @@ class AppString {
   static const group = "グループ";
   static const addGroup = "グループを追加";
   static const inputNewGroup = "ここにグループ名を入力してください";
+  static const setting = "設定";
 }

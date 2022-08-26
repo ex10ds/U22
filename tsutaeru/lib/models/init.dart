@@ -19,5 +19,6 @@ Future<void> initDatabase() async {
     await db.execute(UnsafePhraseBelonging().tableSchema.getCreateTableSql());
   }, version: databaseVersion);
 
-  Settings().check();
+  Settings setting = Settings();
+  await setting.check();
 }
