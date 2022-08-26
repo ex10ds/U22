@@ -2,8 +2,11 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:tsutaeru/models/phrase_group.dart';
 import 'package:tsutaeru/values/strings.dart';
+import 'package:tsutaeru/widgets/add_group.dart';
+import 'package:tsutaeru/widgets/add_group_button.dart';
 import 'package:tsutaeru/widgets/group_list_item.dart';
 
 class GroupList extends StatefulWidget {
@@ -46,27 +49,16 @@ class _GroupListState extends State<GroupList> {
             ],
           ),
           body: GridView.count(
-              crossAxisSpacing: 2,
-              mainAxisSpacing: 8,
+              // crossAxisSpacing: 2,
+              mainAxisSpacing: 6,
               crossAxisCount: 2,
               padding: const EdgeInsets.only(top: 20),
               children: [
+                const AddGroupButton(),
                 Container(
                   height: 50.0,
-                  padding: const EdgeInsets.all(8.0),
-                  margin: const EdgeInsets.symmetric(horizontal: 8.0),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(5.0),
-                    color: const Color.fromARGB(255, 209, 209, 220),
-                  ),
-                  child: const Center(
-                    child: Icon(Icons.add),
-                  ),
-                ),
-                Container(
-                  height: 50.0,
-                  padding: const EdgeInsets.all(8.0),
-                  margin: const EdgeInsets.symmetric(horizontal: 8.0),
+                  // padding: const EdgeInsets.all(8.0),
+                  margin: const EdgeInsets.symmetric(horizontal: 6.0),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(5.0),
                     color: const Color.fromARGB(255, 144, 242, 255),

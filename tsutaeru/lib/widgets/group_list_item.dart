@@ -35,7 +35,7 @@ class GroupListItem extends StatelessWidget {
       child: Container(
         height: 50.0,
         padding: const EdgeInsets.all(8.0),
-        margin: const EdgeInsets.symmetric(horizontal: 8.0),
+        margin: const EdgeInsets.symmetric(horizontal: 6.0),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(5.0),
           color: const Color.fromARGB(255, 209, 255, 157),

@@ -6,4 +6,7 @@ class AppString {
   static const phrase = "フレーズ";
   static const addPhrase = "フレーズを追加";
   static const inputNewPhrase = "ここにフレーズを入力してください";
+  static const group = "グループ";
+  static const addGroup = "グループを追加";
+  static const inputNewGroup = "ここにグループ名を入力してください";
 }
