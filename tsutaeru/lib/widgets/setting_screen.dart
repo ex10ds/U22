@@ -26,7 +26,7 @@ class SettingScreen extends StatefulWidget {
 
 class _SettingScreenState extends State<SettingScreen> {
   late List<int> _colors;
-  int? _nowColor;
+  int _nowColor = 0x04bf9dff;
   int _fontSizeValue = 15;
 
   Future<void> _updateColor(value) async {
@@ -35,6 +35,7 @@ class _SettingScreenState extends State<SettingScreen> {
     });
     var tmp = Settings();
     tmp.primaryColor = value;
+    tmp.fontSize = _fontSizeValue;
     tmp.update();
   }
 
@@ -44,14 +45,15 @@ class _SettingScreenState extends State<SettingScreen> {
     });
     var tmp = Settings();
     tmp.fontSize = value.toInt();
+    tmp.primaryColor = _nowColor;
     tmp.update();
   }
 
   Future<void> setSettings() async {
-    _colors = AppDisplayColor().displayColors;
     var tmp = Settings();
     await tmp.readById("");
     setState(() {
+      _colors = AppDisplayColor().displayColors;
       _nowColor = tmp.primaryColor;
       _fontSizeValue = tmp.fontSize;
     });
@@ -100,12 +102,12 @@ class _SettingScreenState extends State<SettingScreen> {
           Slider(
               min: 15,
               max: 30,
-              divisions: 15,
+              divisions: 17,
               value: _fontSizeValue.toDouble(),
               label: _fontSizeValue.round().toString(),
               onChanged: (value) {
                 _updateFontSize(value);
-              })
+              }),
         ],
       ),
     );
