@@ -4,3 +4,12 @@ class AppColor {
   static const defaultTextColor = 0x505050ff;
   static const defaultBackgroungColor = 0xfafafaff;
 }
+
+class AppDisplayColor {
+  List<int> displayColors = [
+    AppColor.primaryColor,
+    AppColor.secondaryColor,
+    AppColor.defaultTextColor,
+    AppColor.defaultBackgroungColor
+  ];
+}
