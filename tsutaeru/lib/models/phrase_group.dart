@@ -53,8 +53,9 @@ class PhraseGroup extends DatabaseHelper {
     var list = await PhraseBelonging().readById(phraseGroupId: id);
     phrases = [];
     for (var elem in list) {
+      var phraseId = elem[UnsafePhraseBelonging().getColPhraseId()];
       Phrase phrase = Phrase();
-      await phrase.readByMap(elem);
+      await phrase.readById(phraseId);
       phrases.add(phrase);
     }
   }
