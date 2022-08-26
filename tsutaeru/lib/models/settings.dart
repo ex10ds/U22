@@ -1,5 +1,6 @@
 import 'package:tsutaeru/models/database/database_helper.dart';
 import 'package:tsutaeru/models/database/sqlite.dart';
+import 'package:tsutaeru/values/colors.dart';
 
 class Settings extends DatabaseHelper {
   final String id = "current";
@@ -52,5 +53,14 @@ class Settings extends DatabaseHelper {
     map["font_size"] = fontSize;
     map["primary_color"] = primaryColor;
     await edit(map);
+  }
+
+  Future<void> check() async {
+    await readById(id);
+    if (fontSize == 0 || primaryColor == 0) {
+      primaryColor = AppColor.primaryColor;
+      fontSize = 30;
+      update();
+    }
   }
 }
