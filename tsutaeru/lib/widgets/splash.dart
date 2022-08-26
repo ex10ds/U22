@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tsutaeru/init_process.dart';
+import 'package:tsutaeru/models/settings.dart';
 import 'package:tsutaeru/values/colors.dart';
 import 'package:tsutaeru/values/strings.dart';
 import 'package:tsutaeru/widgets/group_list.dart';
@@ -14,6 +15,17 @@ class LaunchApp extends StatefulWidget {
 class _SplashState extends State {
   late Widget _screen = const SplashWidget();
 
+  int _color = 0x04bf9dff;
+  int _fontSize = 15;
+  Future<void> setSettings() async {
+    var tmp = Settings();
+    await tmp.readById("");
+    setState(() {
+      _color = tmp.primaryColor;
+      _fontSize = tmp.fontSize;
+    });
+  }
+
   @override
   void initState() {
     super.initState();
@@ -23,7 +35,7 @@ class _SplashState extends State {
   Future<void> launchApp() async {
     // create database
     await initProcess();
-
+    await setSettings();
     setState(() {
       // first widget in this application
       _screen = const GroupList();
@@ -34,8 +46,10 @@ class _SplashState extends State {
   Widget build(BuildContext context) {
     return MaterialApp(
         theme: ThemeData(
-            appBarTheme:
-                const AppBarTheme(color: Color(AppColor.primaryColor))),
+            appBarTheme: AppBarTheme(color: Color(_color)),
+            textTheme: TextTheme(
+                bodyText1: TextStyle(fontSize: _fontSize.toDouble()),
+                bodyText2: TextStyle(fontSize: _fontSize.toDouble()))),
         home: _screen);
   }
 }
