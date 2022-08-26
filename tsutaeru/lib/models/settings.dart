@@ -40,7 +40,7 @@ class Settings extends DatabaseHelper {
 
   @override
   Future<void> readById(String targetId) async {
-    var map = await getRecord({getPrimaryKeys()[0]: id});
+    var map = await getRecord({"id": id});
     fontSize = map["font_size"];
     primaryColor = map["primary_color"];
   }
@@ -49,7 +49,6 @@ class Settings extends DatabaseHelper {
   Future<void> update() async {
     var map = getColumnMap();
     map["id"] = id;
-
     map["font_size"] = fontSize;
     map["primary_color"] = primaryColor;
     await edit(map);
@@ -60,7 +59,7 @@ class Settings extends DatabaseHelper {
     if (fontSize == 0 || primaryColor == 0) {
       primaryColor = AppColor.primaryColor;
       fontSize = 30;
-      update();
+      await create();
     }
   }
 }
