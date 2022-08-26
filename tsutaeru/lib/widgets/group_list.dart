@@ -4,6 +4,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:tsutaeru/models/phrase_group.dart';
+import 'package:tsutaeru/values/colors.dart';
 import 'package:tsutaeru/values/strings.dart';
 import 'package:tsutaeru/widgets/add_group.dart';
 import 'package:tsutaeru/widgets/add_group_button.dart';
@@ -39,11 +40,13 @@ class _GroupListState extends State<GroupList> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        theme: ThemeData(primarySwatch: Colors.cyan),
+        theme: ThemeData(
+            appBarTheme: const AppBarTheme(color: Color(primaryColor))),
         home: Scaffold(
           appBar: AppBar(
             title: const Text(AppString.appName),
             centerTitle: true,
+            elevation: 1,
             actions: [
               IconButton(onPressed: () {}, icon: const Icon(Icons.settings))
             ],
