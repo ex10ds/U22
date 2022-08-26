@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tsutaeru/init_process.dart';
+import 'package:tsutaeru/values/colors.dart';
 import 'package:tsutaeru/values/strings.dart';
 import 'package:tsutaeru/widgets/group_list.dart';
 
@@ -31,7 +32,11 @@ class _SplashState extends State {
 
   @override
   Widget build(BuildContext context) {
-    return _screen;
+    return MaterialApp(
+        theme: ThemeData(
+            appBarTheme:
+                const AppBarTheme(color: Color(AppColor.primaryColor))),
+        home: _screen);
   }
 }
 
