@@ -46,7 +46,13 @@ import 'package:tsutaeru/values/strings.dart';
 // }
 class AddPhrase extends StatefulWidget {
   final String groupName, groupId;
-  const AddPhrase({Key? key, required this.groupId, required this.groupName})
+  final Future<void> setPhrases;
+
+  const AddPhrase(
+      {Key? key,
+      required this.groupId,
+      required this.groupName,
+      required this.setPhrases})
       : super(key: key);
 
   @override
@@ -62,9 +68,11 @@ class _AddPhraseState extends State<AddPhrase> {
       var tmp = Phrase();
       tmp.text = _phrase;
       tmp.color = colors.first;
-      tmp.create();
-      PhraseBelonging().create(phraseGroupId: widget.groupId, phraseId: tmp.id);
+      await tmp.create();
+      await PhraseBelonging()
+          .create(phraseGroupId: widget.groupId, phraseId: tmp.id);
     }
+    // widget.setPhrases;
   }
 
   @override

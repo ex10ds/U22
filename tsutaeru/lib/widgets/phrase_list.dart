@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:tsutaeru/models/phrase.dart';
+import 'package:tsutaeru/models/phrase_belonging.dart';
 import 'package:tsutaeru/models/phrase_group.dart';
 import 'package:tsutaeru/values/strings.dart';
 import 'package:tsutaeru/widgets/add_phrase.dart';
@@ -21,9 +22,14 @@ class _PhraseListState extends State<PhraseList> {
   Future<void> _setPhrases() async {
     var tmp = PhraseGroup();
     await tmp.readById(widget.groupId);
+    // var phrases = await Phrase().readAll();
     setState(() {
       _phrases = tmp.phrases;
     });
+  }
+
+  Future<void> getPhrases() async {
+    _setPhrases();
   }
 
   @override
@@ -45,7 +51,9 @@ class _PhraseListState extends State<PhraseList> {
               context,
               MaterialPageRoute(
                 builder: (context) => AddPhrase(
-                    groupId: widget.groupId, groupName: widget.groupName),
+                    groupId: widget.groupId,
+                    groupName: widget.groupName,
+                    setPhrases: getPhrases()),
               ),
             );
           },
