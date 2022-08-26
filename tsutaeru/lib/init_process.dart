@@ -53,8 +53,8 @@ Future<void> initProcess() async {
 Future<Color> insertDefaultColor() async {
   Color defaultColor = Color();
   defaultColor.id = "default_color";
-  defaultColor.textColor = defaultTextColor;
-  defaultColor.backgroundColor = defaultBackgroungColor;
+  defaultColor.textColor = AppColor.defaultTextColor;
+  defaultColor.backgroundColor = AppColor.defaultBackgroungColor;
   defaultColor.create();
 
   return defaultColor;

@@ -41,7 +41,8 @@ class _GroupListState extends State<GroupList> {
   Widget build(BuildContext context) {
     return MaterialApp(
         theme: ThemeData(
-            appBarTheme: const AppBarTheme(color: Color(primaryColor))),
+            appBarTheme:
+                const AppBarTheme(color: Color(AppColor.primaryColor))),
         home: Scaffold(
           appBar: AppBar(
             title: const Text(AppString.appName),
