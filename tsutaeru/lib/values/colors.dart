@@ -1,4 +1,6 @@
-const primaryColor = 0x04bf9dff;
-const secondaryColor = 0xf5841bff;
-const defaultTextColor = 0x505050ff;
-const defaultBackgroungColor = 0xfafafaff;
+class AppColor {
+  static const primaryColor = 0x04bf9dff;
+  static const secondaryColor = 0xf5841bff;
+  static const defaultTextColor = 0x505050ff;
+  static const defaultBackgroungColor = 0xfafafaff;
+}
