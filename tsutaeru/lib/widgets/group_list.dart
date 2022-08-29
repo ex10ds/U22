@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:tsutaeru/models/phrase_group.dart';
 import 'package:tsutaeru/values/strings.dart';
 import 'package:tsutaeru/widgets/add_group_button.dart';
+import 'package:tsutaeru/widgets/all_phrase.dart';
 import 'package:tsutaeru/widgets/group_list_item.dart';
 import 'package:tsutaeru/widgets/setting_screen.dart';
 
@@ -56,16 +57,22 @@ class _GroupListState extends State<GroupList> {
           padding: const EdgeInsets.only(top: 20),
           children: [
             const AddGroupButton(),
-            Container(
-              height: 50.0,
-              // padding: const EdgeInsets.all(8.0),
-              margin: const EdgeInsets.symmetric(horizontal: 6.0),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(5.0),
-                color: const Color.fromARGB(255, 144, 242, 255),
-              ),
-              child: const Center(
-                child: Text(AppString.allPhrases),
+            GestureDetector(
+              onTap: () {
+                Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) => const AllPhrase()));
+              },
+              child: Container(
+                height: 50.0,
+                // padding: const EdgeInsets.all(8.0),
+                margin: const EdgeInsets.symmetric(horizontal: 6.0),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(5.0),
+                  color: const Color.fromARGB(255, 144, 242, 255),
+                ),
+                child: const Center(
+                  child: Text(AppString.allPhrases),
+                ),
               ),
             ),
             ..._groups
