@@ -6,7 +6,7 @@ import 'package:tsutaeru/models/phrase_belonging.dart';
 import 'package:tsutaeru/models/phrase_group.dart';
 import 'package:tsutaeru/values/strings.dart';
 import 'package:tsutaeru/widgets/add_phrase.dart';
-import 'package:tsutaeru/widgets/phrase_display.dart';
+import 'package:tsutaeru/widgets/phrase_list_item.dart';
 
 class PhraseList extends StatefulWidget {
   final String groupName, groupId;
@@ -60,13 +60,10 @@ class _PhraseListState extends State<PhraseList> {
           },
         ),
         ..._phrases
-            .map((Phrase phrase) => ListTile(
-                onTap: () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) =>
-                          PhraseDisplay(displayText: phrase.text)));
-                },
-                title: Text(phrase.text)))
+            .map((Phrase phrase) => PhraseListItem(
+                  phrase: phrase,
+                  refetchPhrases: _setPhrases,
+                ))
             .toList()
       ]),
     );
