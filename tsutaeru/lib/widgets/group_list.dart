@@ -55,7 +55,7 @@ class _GroupListState extends State<GroupList> {
           crossAxisCount: 2,
           padding: const EdgeInsets.only(top: 20),
           children: [
-            const AddGroupButton(),
+            AddGroupButton(setGroups: setGroups()),
             Container(
               height: 50.0,
               // padding: const EdgeInsets.all(8.0),

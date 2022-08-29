@@ -3,7 +3,8 @@ import 'package:tsutaeru/models/phrase_group.dart';
 import 'package:tsutaeru/values/strings.dart';
 
 class AddGroup extends StatefulWidget {
-  const AddGroup({Key? key}) : super(key: key);
+  final Future<void> setGroups;
+  const AddGroup({Key? key, required this.setGroups}) : super(key: key);
 
   @override
   State<AddGroup> createState() => _AddGroupState();
