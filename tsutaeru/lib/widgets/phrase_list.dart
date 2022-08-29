@@ -2,7 +2,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:tsutaeru/models/phrase.dart';
-import 'package:tsutaeru/models/phrase_belonging.dart';
 import 'package:tsutaeru/models/phrase_group.dart';
 import 'package:tsutaeru/values/strings.dart';
 import 'package:tsutaeru/widgets/add_phrase.dart';

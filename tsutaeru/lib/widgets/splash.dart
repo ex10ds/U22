@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tsutaeru/init_process.dart';
 import 'package:tsutaeru/models/settings.dart';
-import 'package:tsutaeru/values/colors.dart';
-import 'package:tsutaeru/values/strings.dart';
 import 'package:tsutaeru/widgets/group_list.dart';
 
 class LaunchApp extends StatefulWidget {

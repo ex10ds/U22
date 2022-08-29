@@ -1,4 +1,3 @@
-import 'package:sqflite/sqflite.dart';
 import 'package:tsutaeru/models/database/database_helper.dart';
 import 'package:tsutaeru/models/database/sqlite.dart';
 import 'package:tsutaeru/models/phrase_belonging.dart';
