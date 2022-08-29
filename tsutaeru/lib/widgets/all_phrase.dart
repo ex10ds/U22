@@ -32,7 +32,7 @@ class _AllPhraseState extends State<AllPhrase> {
         appBar: AppBar(title: const Text(AppString.allPhrases)),
         body: ListView(children: [
           ..._phrases.map(
-              (e) => PhraseListItem(phrase: e, refetchPhrases: _setPhrases()))
+              (e) => PhraseListItem(phrase: e, refetchPhrases: _setPhrases))
         ]));
   }
 }
