@@ -65,7 +65,7 @@ class SplashWidget extends StatelessWidget {
         body: Center(
           child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: [Image.asset('assets/logo-removebg-preview.png')]),
+              children: [Image.asset('assets/logo_wide.png')]),
         ),
       ),
     );
