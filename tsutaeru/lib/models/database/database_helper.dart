@@ -133,7 +133,9 @@ abstract class DatabaseHelper {
       throw DatabaseHelperError(DatabaseHelperErrorType.mapIsNotCorrect);
     }
     final db = await _openDB();
-    await db.update(tableSchema.getTableName(), map);
+    final pk = tableSchema.getPrimaryKeys()[0];
+    await db.update(tableSchema.getTableName(), map,
+        where: "$pk = ?", whereArgs: [map[pk]]);
   }
 
   // DELETE
