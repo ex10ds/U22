@@ -1,6 +1,4 @@
 // フレーズ一覧内アイテムWidget
-import 'dart:html';
-
 import 'package:flutter/material.dart';
 import 'package:tsutaeru/models/phrase.dart';
 import 'package:tsutaeru/values/strings.dart';

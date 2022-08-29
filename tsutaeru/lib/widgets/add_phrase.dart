@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:tsutaeru/models/color.dart';
 import 'package:tsutaeru/models/phrase.dart';
 import 'package:tsutaeru/models/phrase_belonging.dart';
-import 'package:tsutaeru/values/colors.dart';
 import 'package:tsutaeru/values/strings.dart';
 
 // class AddPhrase extends StatelessWidget {

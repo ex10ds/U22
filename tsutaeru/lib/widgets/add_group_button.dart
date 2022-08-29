@@ -1,9 +1,6 @@
 // グループリスト内一つずつのアイテムWidget
 import 'package:flutter/material.dart';
-import 'package:tsutaeru/models/phrase_group.dart';
-import 'package:tsutaeru/values/strings.dart';
 import 'package:tsutaeru/widgets/add_group.dart';
-import 'package:tsutaeru/widgets/phrase_list.dart';
 
 class AddGroupButton extends StatefulWidget {
   const AddGroupButton({Key? key}) : super(key: key);

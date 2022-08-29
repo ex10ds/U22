@@ -1,9 +1,6 @@
 // グループ一覧表示Widget
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:tsutaeru/models/phrase_group.dart';
-import 'package:tsutaeru/values/colors.dart';
 import 'package:tsutaeru/values/strings.dart';
 import 'package:tsutaeru/widgets/add_group_button.dart';
 import 'package:tsutaeru/widgets/group_list_item.dart';
