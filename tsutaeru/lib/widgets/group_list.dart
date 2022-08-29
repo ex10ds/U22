@@ -56,7 +56,7 @@ class _GroupListState extends State<GroupList> {
           crossAxisCount: 2,
           padding: const EdgeInsets.only(top: 20),
           children: [
-            const AddGroupButton(),
+            AddGroupButton(setGroups: setGroups()),
             GestureDetector(
               onTap: () {
                 Navigator.of(context).push(

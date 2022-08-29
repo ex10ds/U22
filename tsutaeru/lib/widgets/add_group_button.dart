@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:tsutaeru/widgets/add_group.dart';
 
 class AddGroupButton extends StatefulWidget {
-  const AddGroupButton({Key? key}) : super(key: key);
+  final Future<void> setGroups;
+  const AddGroupButton({Key? key, required this.setGroups}) : super(key: key);
 
   @override
   State<AddGroupButton> createState() => _AddGroupButtonState();
@@ -14,8 +15,10 @@ class _AddGroupButtonState extends State<AddGroupButton> {
   Widget build(BuildContext context) {
     return GestureDetector(
         onTap: () {
-          Navigator.of(context)
-              .push(MaterialPageRoute(builder: (context) => const AddGroup()));
+          Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => AddGroup(
+                    setGroups: widget.setGroups,
+                  )));
         },
         child: Container(
           height: 50.0,
