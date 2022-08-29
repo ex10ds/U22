@@ -2,7 +2,7 @@ class AppString {
   static const appName = "つたえる";
   static const edit = "編集";
   static const delete = "削除";
-  static const allPhrases = "すべての文章";
+  static const allPhrases = "すべてのフレーズ";
   static const add = "新規登録";
   static const phrase = "フレーズ";
   static const addPhrase = "フレーズを追加";
