@@ -1,8 +1,11 @@
 // フレーズ一覧内アイテムWidget
+import 'dart:html';
+
 import 'package:flutter/material.dart';
 import 'package:tsutaeru/models/phrase.dart';
 import 'package:tsutaeru/values/strings.dart';
 import 'package:tsutaeru/widgets/edit_phrase.dart';
+import 'package:tsutaeru/widgets/phrase_display.dart';
 
 class PhraseListItem extends StatelessWidget {
   final Phrase phrase;
@@ -29,6 +32,10 @@ class PhraseListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
+      onTap: () {
+        Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => PhraseDisplay(displayText: phrase.text)));
+      },
       title: Text(phrase.text),
       trailing: PopupMenuButton(
           onSelected: (value) async {
