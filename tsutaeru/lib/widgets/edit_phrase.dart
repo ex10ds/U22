@@ -4,8 +4,11 @@ import 'package:tsutaeru/values/strings.dart';
 
 class EditPhrase extends StatefulWidget {
   final Phrase phrase;
+  final Function() updatePhrases;
 
-  const EditPhrase({Key? key, required this.phrase}) : super(key: key);
+  const EditPhrase(
+      {Key? key, required this.phrase, required this.updatePhrases})
+      : super(key: key);
 
   @override
   State<EditPhrase> createState() => _EditPhraseState();
@@ -17,6 +20,7 @@ class _EditPhraseState extends State<EditPhrase> {
   Future<void> add() async {
     widget.phrase.text = _phrase;
     await widget.phrase.update();
+    widget.updatePhrases();
   }
 
   @override

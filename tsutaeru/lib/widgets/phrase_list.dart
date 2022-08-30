@@ -62,6 +62,7 @@ class _PhraseListState extends State<PhraseList> {
             .map((Phrase phrase) => PhraseListItem(
                   phrase: phrase,
                   refetchPhrases: setPhrases,
+                  updatePhrases: setPhrases,
                 ))
             .toList()
       ]),
