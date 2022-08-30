@@ -1,28 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tsutaeru/init_process.dart';
-import 'package:tsutaeru/models/settings.dart';
+import 'package:tsutaeru/providers/app_setting_provider.dart';
 import 'package:tsutaeru/widgets/group_list.dart';
 
-class LaunchApp extends StatefulWidget {
+class LaunchApp extends ConsumerStatefulWidget {
   const LaunchApp({Key? key}) : super(key: key);
 
   @override
-  State<StatefulWidget> createState() => _SplashState();
+  SplashState createState() => SplashState();
 }
 
-class _SplashState extends State {
+class SplashState extends ConsumerState<LaunchApp> {
   late Widget _screen = const SplashWidget();
-
-  int _color = 0x04bf9dff;
-  int _fontSize = 15;
-  Future<void> setSettings() async {
-    var tmp = Settings();
-    await tmp.readById("");
-    setState(() {
-      _color = tmp.primaryColor;
-      _fontSize = tmp.fontSize;
-    });
-  }
 
   @override
   void initState() {
@@ -33,7 +23,8 @@ class _SplashState extends State {
   Future<void> launchApp() async {
     // create database
     await initProcess();
-    await setSettings();
+    await ref.read(appSettingProvider.notifier).loadFromStorage();
+
     setState(() {
       // first widget in this application
       _screen = const GroupList();
@@ -42,12 +33,14 @@ class _SplashState extends State {
 
   @override
   Widget build(BuildContext context) {
+    var appSetting = ref.watch(appSettingProvider);
     return MaterialApp(
         theme: ThemeData(
-            appBarTheme: AppBarTheme(color: Color(_color)),
+            appBarTheme: AppBarTheme(color: Color(appSetting.color)),
             textTheme: TextTheme(
-                bodyText1: TextStyle(fontSize: _fontSize.toDouble()),
-                bodyText2: TextStyle(fontSize: _fontSize.toDouble()))),
+                bodyText1: TextStyle(fontSize: appSetting.fontSize.toDouble()),
+                bodyText2:
+                    TextStyle(fontSize: appSetting.fontSize.toDouble()))),
         home: _screen);
   }
 }
