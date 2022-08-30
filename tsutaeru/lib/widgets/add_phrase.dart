@@ -44,7 +44,7 @@ import 'package:tsutaeru/values/strings.dart';
 // }
 class AddPhrase extends StatefulWidget {
   final String groupName, groupId;
-  final Future<void> setPhrases;
+  final Function() setPhrases;
 
   const AddPhrase(
       {Key? key,
@@ -67,10 +67,9 @@ class _AddPhraseState extends State<AddPhrase> {
       tmp.text = _phrase;
       tmp.color = colors.first;
       await tmp.create();
-      await PhraseBelonging()
-          .create(phraseGroupId: widget.groupId, phraseId: tmp.id);
+      PhraseBelonging().create(phraseGroupId: widget.groupId, phraseId: tmp.id);
     }
-    // widget.setPhrases;
+    widget.setPhrases();
   }
 
   @override

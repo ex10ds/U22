@@ -19,7 +19,7 @@ class PhraseList extends StatefulWidget {
 class _PhraseListState extends State<PhraseList> {
   List<Phrase> _phrases = [];
 
-  Future<void> _setPhrases() async {
+  Future<void> setPhrases() async {
     var tmp = PhraseGroup();
     await tmp.readById(widget.groupId);
     // var phrases = await Phrase().readAll();
@@ -29,13 +29,13 @@ class _PhraseListState extends State<PhraseList> {
   }
 
   Future<void> getPhrases() async {
-    _setPhrases();
+    setPhrases();
   }
 
   @override
   void initState() {
     super.initState();
-    _setPhrases();
+    setPhrases();
   }
 
   @override
@@ -53,7 +53,7 @@ class _PhraseListState extends State<PhraseList> {
                 builder: (context) => AddPhrase(
                     groupId: widget.groupId,
                     groupName: widget.groupName,
-                    setPhrases: getPhrases()),
+                    setPhrases: setPhrases),
               ),
             );
           },
@@ -61,7 +61,7 @@ class _PhraseListState extends State<PhraseList> {
         ..._phrases
             .map((Phrase phrase) => PhraseListItem(
                   phrase: phrase,
-                  refetchPhrases: _setPhrases,
+                  refetchPhrases: setPhrases,
                 ))
             .toList()
       ]),

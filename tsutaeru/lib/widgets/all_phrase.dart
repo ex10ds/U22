@@ -13,7 +13,7 @@ class AllPhrase extends StatefulWidget {
 class _AllPhraseState extends State<AllPhrase> {
   List<Phrase> _phrases = [];
 
-  Future<void> _setPhrases() async {
+  Future<void> setPhrases() async {
     var tmp = await Phrase().readAll();
     setState(() {
       _phrases = tmp;
@@ -23,7 +23,7 @@ class _AllPhraseState extends State<AllPhrase> {
   @override
   void initState() {
     super.initState();
-    _setPhrases();
+    setPhrases();
   }
 
   @override
@@ -31,8 +31,8 @@ class _AllPhraseState extends State<AllPhrase> {
     return Scaffold(
         appBar: AppBar(title: const Text(AppString.allPhrases)),
         body: ListView(children: [
-          ..._phrases.map(
-              (e) => PhraseListItem(phrase: e, refetchPhrases: _setPhrases))
+          ..._phrases
+              .map((e) => PhraseListItem(phrase: e, refetchPhrases: setPhrases))
         ]));
   }
 }
