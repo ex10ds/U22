@@ -8,17 +8,24 @@ import 'package:tsutaeru/widgets/phrase_display.dart';
 class PhraseListItem extends StatelessWidget {
   final Phrase phrase;
   final Function refetchPhrases;
+  final Function() updatePhrases;
   // final Future<void> setGroups;
 
   const PhraseListItem(
-      {Key? key, required this.phrase, required this.refetchPhrases})
+      {Key? key,
+      required this.phrase,
+      required this.refetchPhrases,
+      required this.updatePhrases})
       : super(key: key);
 
   void jumpToEditPage(BuildContext context) {
     Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => EditPhrase(phrase: phrase),
+          builder: (context) => EditPhrase(
+            phrase: phrase,
+            updatePhrases: updatePhrases,
+          ),
         ));
   }
 

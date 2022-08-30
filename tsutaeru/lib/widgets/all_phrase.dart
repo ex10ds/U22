@@ -31,8 +31,11 @@ class _AllPhraseState extends State<AllPhrase> {
     return Scaffold(
         appBar: AppBar(title: const Text(AppString.allPhrases)),
         body: ListView(children: [
-          ..._phrases
-              .map((e) => PhraseListItem(phrase: e, refetchPhrases: setPhrases))
+          ..._phrases.map((e) => PhraseListItem(
+                phrase: e,
+                refetchPhrases: setPhrases,
+                updatePhrases: setPhrases,
+              ))
         ]));
   }
 }
